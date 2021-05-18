@@ -34,6 +34,7 @@ const initialState = {
   recording: false,
   screenSharing: false,
   screenSharingStream: {},
+  streams: [],
 };
 
 const handleStreamModification = (state, action) => {
@@ -51,13 +52,13 @@ const handleStreamModification = (state, action) => {
     (participant) => participant.id === action.payload.participant.id
   );
 
-  const filteredStreams = currentParticipant.streams.filter(
-    (stream) => stream.id !== action.payload.stream.id
-  );
+  /* const filteredStreams = currentParticipant.streams.filter(
+    (stream) => !stream.hasOwnProperty("_audioTracks") //stream.id !== action.payload.stream.id
+  );*/
 
   const updatedCurrentParticipant = {
     ...currentParticipant,
-    streams: [...filteredStreams, action.payload.stream],
+    streams: [/*...filteredStreams,*/ action.payload.stream],
   };
 
   return { ...state, participants: [...others, updatedCurrentParticipant] };
@@ -109,6 +110,12 @@ export default handleEffects(
       participants: [...state.participants, action.payload.participant],
     }),
     [participantUpdated]: (state, action) => {
+      const currentParticipant = state.participants.find(
+        (participant) => participant.id === action.payload.participant.id
+      );
+
+      if (!currentParticipant) return state;
+
       const others = state.participants.filter(
         (participant) => participant.id !== action.payload.participant.id
       );
