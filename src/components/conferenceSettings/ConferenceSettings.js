@@ -20,7 +20,7 @@ const ConferenceSettings = ({ className, create }) => {
         ttl: 0,
         stats: "true",
         videoCodec: "H264",
-        dolbyVoice: false,
+        dolbyVoice: true,
       },
     });
   };
