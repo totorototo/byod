@@ -15,17 +15,18 @@ export const getRemoteParticipants = (state) => {
       participant.type !== "mixer"
   );
 
-  return remoteParticipants.map((participant) => ({
-    id: participant.id,
-    name: participant.info.name,
-    stream: participant.streams.find((stream) => {
-      return stream.type === "Camera";
-    }),
-    hasAudio: participantHasAudio(state, participant.id),
-    hasVideo: participantHasVideo(state, participant.id),
-    // inGroup: state.conference.nearbyIds.includes(participant.id),
-  }));
-  //.sort((a, b) => a.name.localeCompare(b.name));
+  return remoteParticipants
+    .map((participant) => ({
+      id: participant.id,
+      name: participant.info.name,
+      stream: participant.streams.find((stream) => {
+        return stream.type === "Camera";
+      }),
+      hasAudio: participantHasAudio(state, participant.id),
+      hasVideo: participantHasVideo(state, participant.id),
+      // inGroup: state.conference.nearbyIds.includes(participant.id),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 };
 
 export const getLocalParticipant = (state) => {

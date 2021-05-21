@@ -38,6 +38,7 @@ const initialState = {
 };
 
 const handleStreamModification = (state, action) => {
+  if (!action.payload.stream || !action.payload.participant) return state;
   if (
     action.payload.stream.type === "ScreenShare" &&
     action.payload.participant.id !== state.localParticipantID
@@ -51,6 +52,8 @@ const handleStreamModification = (state, action) => {
   const currentParticipant = state.participants.find(
     (participant) => participant.id === action.payload.participant.id
   );
+
+  if (!currentParticipant) return state;
 
   /* const filteredStreams = currentParticipant.streams.filter(
     (stream) => !stream.hasOwnProperty("_audioTracks") //stream.id !== action.payload.stream.id
@@ -114,11 +117,17 @@ export default handleEffects(
         (participant) => participant.id === action.payload.participant.id
       );
 
-      if (!currentParticipant) return state;
-
       const others = state.participants.filter(
         (participant) => participant.id !== action.payload.participant.id
       );
+
+      // participant left and rejoining - hack
+      if (!currentParticipant) {
+        return {
+          ...state,
+          participants: [...others, action.payload.participant],
+        };
+      }
 
       const updatedParticipants =
         action.payload.participant.status === "Left"
