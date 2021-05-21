@@ -6,10 +6,14 @@ import { application } from "../../effects";
 
 export default function* initialize() {
   const token = yield select((state) => state.application.token);
-  yield call(
-    [VoxeetSDK, VoxeetSDK.initializeToken],
-    token,
-    retrieveAccessToken
-  );
-  yield put(application.sdkInitialized());
+  try {
+    yield call(
+      [VoxeetSDK, VoxeetSDK.initializeToken],
+      token,
+      retrieveAccessToken
+    );
+    yield put(application.sdkInitialized());
+  } catch (exception) {
+    // TODO: handle initialization exception
+  }
 }

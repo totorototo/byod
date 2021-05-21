@@ -38,21 +38,19 @@ const style = (Component) => styled(Component)`
     justify-content: flex-start;
   }
 
-  .remote-participants {
-    height: 60%;
-
+  .remote-participants-video {
+    flex: 1;
     width: 100%;
     padding: 1rem;
     display: grid;
     place-items: center;
     grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, 1fr);
 
     .remote-participant-wrapper {
       display: grid;
       width: 100%;
       height: 100%;
-      max-height: 400px;
     }
 
     @media screen and (min-width: ${THEME.breakpoints[0]}) {
@@ -64,11 +62,31 @@ const style = (Component) => styled(Component)`
     }
   }
 
+  .remote-participants-no-video {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+
+    .remote-participant-no-video-wrapper {
+      background-color: var(--color-primary);
+      color: var(--color-background);
+
+      width: 2rem;
+      height: 2rem;
+      display: grid;
+      place-items: center;
+      border-radius: 80%;
+      text-transform: uppercase;
+    }
+  }
+
   .main-commands-wrapper {
     display: flex;
     align-items: flex-end;
     margin-bottom: 1rem;
-    flex: 1;
+    // flex: 1;
     width: 100%;
     justify-content: center;
   }

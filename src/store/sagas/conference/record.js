@@ -2,9 +2,17 @@ import { call } from "redux-saga/effects";
 import VoxeetSDK from "@voxeet/voxeet-web-sdk";
 
 export function* stopRecordingConference() {
-  yield call([VoxeetSDK.recording, VoxeetSDK.recording.stop]);
+  try {
+    yield call([VoxeetSDK.recording, VoxeetSDK.recording.stop]);
+  } catch (exception) {
+    // TODO: handle error
+  }
 }
 
 export function* recordConference() {
-  yield call([VoxeetSDK.recording, VoxeetSDK.recording.start]);
+  try {
+    yield call([VoxeetSDK.recording, VoxeetSDK.recording.start]);
+  } catch (exception) {
+    // TODO: handle error
+  }
 }

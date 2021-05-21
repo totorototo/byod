@@ -9,13 +9,17 @@ export function* startVideo({ payload }) {
     (participant) => participant.id === payload
   );
   if (participant) {
-    yield call(
-      [VoxeetSDK.conference, VoxeetSDK.conference.startVideo],
-      participant,
-      { audio: true, video: true }
-    );
+    try {
+      yield call(
+        [VoxeetSDK.conference, VoxeetSDK.conference.startVideo],
+        participant,
+        { audio: true, video: true }
+      );
 
-    yield put(conference.videoStarted());
+      yield put(conference.videoStarted());
+    } catch (exception) {
+      // TODO: handle error
+    }
   }
 }
 
@@ -25,11 +29,15 @@ export function* stopVideo({ payload }) {
     (participant) => participant.id === payload
   );
   if (participant) {
-    yield call(
-      [VoxeetSDK.conference, VoxeetSDK.conference.stopVideo],
-      participant
-    );
+    try {
+      yield call(
+        [VoxeetSDK.conference, VoxeetSDK.conference.stopVideo],
+        participant
+      );
 
-    yield put(conference.videoStopped());
+      yield put(conference.videoStopped());
+    } catch (exception) {
+      //TODO: handle error
+    }
   }
 }

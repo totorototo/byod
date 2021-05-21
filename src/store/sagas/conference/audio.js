@@ -7,10 +7,14 @@ export function* startAudio({ payload }) {
     (participant) => participant.id === payload
   );
   if (participant) {
-    yield call(
-      [VoxeetSDK.conference, VoxeetSDK.conference.startAudio],
-      participant
-    );
+    try {
+      yield call(
+        [VoxeetSDK.conference, VoxeetSDK.conference.startAudio],
+        participant
+      );
+    } catch (exception) {
+      // TODO: dispatch error to store
+    }
   }
 }
 export function* stopAudio({ payload }) {
@@ -19,9 +23,13 @@ export function* stopAudio({ payload }) {
     (participant) => participant.id === payload
   );
   if (participant) {
-    yield call(
-      [VoxeetSDK.conference, VoxeetSDK.conference.stopAudio],
-      participant
-    );
+    try {
+      yield call(
+        [VoxeetSDK.conference, VoxeetSDK.conference.stopAudio],
+        participant
+      );
+    } catch (exception) {
+      // TODO: dispatch action to store
+    }
   }
 }

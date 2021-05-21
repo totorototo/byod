@@ -37,21 +37,29 @@ export function* create({ payload }) {
 export function* join({ payload }) {
   const savedConference = yield select((state) => state.conference.details);
 
-  const updatedConference = yield call(
-    [VoxeetSDK.conference, VoxeetSDK.conference.join],
-    savedConference,
-    {
-      constraints: payload,
-    }
-  );
+  try {
+    const updatedConference = yield call(
+      [VoxeetSDK.conference, VoxeetSDK.conference.join],
+      savedConference,
+      {
+        constraints: payload,
+      }
+    );
 
-  yield put(conference.setConferenceInfos(updatedConference));
-  yield put(push(`/conference/${updatedConference.id}`));
+    yield put(conference.setConferenceInfos(updatedConference));
+    yield put(push(`/conference/${updatedConference.id}`));
+  } catch (exception) {
+    // TODO: handle joining issue
+  }
 }
 
 export function* leave() {
-  yield call([VoxeetSDK.conference, VoxeetSDK.conference.leave]);
-  yield put(conference.setConferenceInfos({}));
-  yield put(conference.setLocalParticipantID());
-  yield put(push("/conferenceSettings"));
+  try {
+    yield call([VoxeetSDK.conference, VoxeetSDK.conference.leave]);
+    yield put(conference.setConferenceInfos({}));
+    yield put(conference.setLocalParticipantID());
+    yield put(push("/conferenceSettings"));
+  } catch (exception) {
+    // TODO: handle leaving exception
+  }
 }

@@ -4,6 +4,10 @@ import VoxeetSDK from "@voxeet/voxeet-web-sdk";
 import { session } from "../../effects";
 
 export default function* closeSession() {
-  yield call([VoxeetSDK.session, VoxeetSDK.session.close]);
-  yield put(session.closed());
+  try {
+    yield call([VoxeetSDK.session, VoxeetSDK.session.close]);
+    yield put(session.closed());
+  } catch (exception) {
+    // TODO: handle exception
+  }
 }
