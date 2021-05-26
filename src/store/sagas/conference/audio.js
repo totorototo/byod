@@ -1,35 +1,23 @@
 import { call, select } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
+
+import { getEntity } from "../../reducers/entities/selectors";
+import { startAudio as start, stopAudio as stop } from "../../services/audio";
 
 export function* startAudio({ payload }) {
-  const participants = yield select((state) => state.conference.participants);
-  const participant = participants.find(
-    (participant) => participant.id === payload
+  const participant = yield select((state) =>
+    getEntity(state, "participants", payload)
   );
+
   if (participant) {
-    try {
-      yield call(
-        [VoxeetSDK.conference, VoxeetSDK.conference.startAudio],
-        participant
-      );
-    } catch (exception) {
-      // TODO: dispatch error to store
-    }
+    yield call(start, participant);
   }
 }
 export function* stopAudio({ payload }) {
-  const participants = yield select((state) => state.conference.participants);
-  const participant = participants.find(
-    (participant) => participant.id === payload
+  const participant = yield select((state) =>
+    getEntity(state, "participants", payload)
   );
+
   if (participant) {
-    try {
-      yield call(
-        [VoxeetSDK.conference, VoxeetSDK.conference.stopAudio],
-        participant
-      );
-    } catch (exception) {
-      // TODO: dispatch action to store
-    }
+    yield call(stop, participant);
   }
 }

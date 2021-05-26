@@ -1,22 +1,14 @@
-import { call, put } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
+import { call } from "redux-saga/effects";
 
-import { conference } from "../../effects";
+import {
+  startScreenShare as start,
+  stopScreenShare as stop,
+} from "../../services/screenShare";
 
-export function* startScreenShare({ payload }) {
-  try {
-    yield call([VoxeetSDK.conference, VoxeetSDK.conference.startScreenShare]);
-    yield put(conference.screenShareStarted());
-  } catch (error) {
-    //TODO: handle sdk raised exception
-  }
+export function* startScreenShare() {
+  yield call(start);
 }
 
-export function* stopScreenShare({ payload }) {
-  try {
-    yield call([VoxeetSDK.conference, VoxeetSDK.conference.stopScreenShare]);
-    yield put(conference.screenShareStopped());
-  } catch (error) {
-    //TODO: handle sdk raised exception
-  }
+export function* stopScreenShare() {
+  yield call(stop);
 }

@@ -28,7 +28,7 @@ const Tile = ({
         />
       </div>
       {participant.hasVideo ? (
-        <Video width={width} height={height} stream={participant.stream} />
+        <Video width={width} height={height} stream={participant.streams[0]} />
       ) : (
         <>{participant.inGroup ? <Users size={50} /> : <User size={50} />}</>
       )}

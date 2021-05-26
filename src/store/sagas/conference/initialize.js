@@ -1,19 +1,19 @@
 import { select, put, call } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
 
 import { retrieveAccessToken } from "../authentication/authenticate";
 import { application } from "../../effects";
+import { initializeSDK } from "../../services/sdk";
 
 export default function* initialize() {
-  const token = yield select((state) => state.application.token);
-  try {
-    yield call(
-      [VoxeetSDK, VoxeetSDK.initializeToken],
-      token,
-      retrieveAccessToken
-    );
+  const token = yield select((state) => state.application.authentication.token);
+
+  const exception = yield call(initializeSDK, {
+    token,
+    callback: retrieveAccessToken,
+  });
+
+  if (!exception) {
+    // TODO: useful?
     yield put(application.sdkInitialized());
-  } catch (exception) {
-    // TODO: handle initialization exception
   }
 }
