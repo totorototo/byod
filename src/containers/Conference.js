@@ -3,26 +3,88 @@ import { connect } from "react-redux";
 import { conference } from "../store/actions";
 import Conference from "../components/conference/Conference";
 import {
-  getLocalParticipant,
-  getRemoteParticipants,
-  getParticipantVideo,
-  participantHasVideo,
-  getConferenceDetails,
-} from "../store/selectors/conference";
+  getCurrentConferenceID,
+  getLocalParticipantID,
+} from "../store/reducers/application/selectors";
+import {
+  getEntity,
+  getValidEntities,
+} from "../store/reducers/entities/selectors";
 
-const mapStateToProps = (state) => ({
-  conferenceDetails: getConferenceDetails(state),
-  localParticipant: getLocalParticipant(state),
-  remoteParticipants: getRemoteParticipants(state),
-  videoStarted: state.conference.videoStarted,
-  participantVideo: getParticipantVideo(
+const mapStateToProps = (state) => {
+  const hasVideo = (streams) => {
+    const stream = streams.find((stream) => stream.type === "Camera");
+
+    if (!stream) return false;
+
+    const tracks = stream.getVideoTracks();
+    return tracks.length > 0;
+  };
+
+  const hasAudio = (streams) => {
+    const stream = streams.find((stream) => stream.type === "Camera");
+
+    if (!stream) return false;
+
+    const tracks = stream.getAudioTracks();
+    return tracks.length > 0;
+  };
+
+  const conference = getEntity(
     state,
-    state.conference.localParticipantID
-  ),
-  hasVideo: participantHasVideo(state, state.conference.localParticipantID),
-  hasAudio: participantHasVideo(state, state.conference.localParticipantID),
-  screenSharingStream: state.conference.screenSharingStream,
-});
+    "conferences",
+    getCurrentConferenceID(state)
+  );
+
+  const localParticipant = getEntity(
+    state,
+    "participants",
+    getLocalParticipantID(state)
+  );
+
+  const localParticipantStreams = getValidEntities(
+    state,
+    "streams",
+    localParticipant.streams
+  );
+
+  const localParticipantHasVideo = hasVideo(localParticipantStreams);
+  const localParticipantHasAudio = hasAudio(localParticipantStreams);
+
+  const updatedLocalParticipant = {
+    ...localParticipant,
+    hasAudio: localParticipantHasAudio,
+    hasVideo: localParticipantHasVideo,
+    streams: localParticipantStreams,
+  };
+
+  const remoteParticipantsIDs =
+    conference &&
+    conference.participants &&
+    conference.participants.length > 0 &&
+    conference.participants.filter((id) => id !== localParticipant.id);
+
+  const remoteParticipants = getValidEntities(
+    state,
+    "participants",
+    remoteParticipantsIDs
+  );
+
+  const updatedRemoteParticipants = remoteParticipants.map((participant) => {
+    const streams = getValidEntities(state, "streams", participant.streams);
+
+    const video = hasVideo(streams);
+    const audio = hasAudio(streams);
+    return { ...participant, streams, hasVideo: video, hasAudio: audio };
+  });
+
+  return {
+    localParticipant: updatedLocalParticipant,
+    conference,
+    remoteParticipants: updatedRemoteParticipants,
+    screenSharingStream: {},
+  };
+};
 const mapDispatchToProps = {
   leave: conference.leave,
   stopAudio: conference.stopAudio,

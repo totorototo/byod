@@ -1,15 +1,13 @@
 import { call, put } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
 import { push } from "connected-react-router";
 
 import { session } from "../../effects";
+import { openSession as open } from "../../services/session";
 
 export default function* openSession({ payload }) {
-  try {
-    yield call([VoxeetSDK.session, VoxeetSDK.session.open], payload);
+  const exception = yield call(open, payload);
+  if (!exception) {
     yield put(session.opened());
     yield put(push("/conferenceSettings"));
-  } catch (exception) {
-    //TODO: handle exception
   }
 }

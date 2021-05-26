@@ -1,5 +1,4 @@
-import application from "./application";
-import session from "./session";
-import conference from "./conference";
+import application from "./application/application";
+import entities from "./entities/entities";
 
-export { application, session, conference };
+export { application, entities };

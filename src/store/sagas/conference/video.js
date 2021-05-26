@@ -1,43 +1,24 @@
-import { call, select, put } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
+import { call, select } from "redux-saga/effects";
 
-import { conference } from "../../effects";
+import { getEntity } from "../../reducers/entities/selectors";
+import { startVideo as start, stopVideo as stop } from "../../services/video";
 
 export function* startVideo({ payload }) {
-  const participants = yield select((state) => state.conference.participants);
-  const participant = participants.find(
-    (participant) => participant.id === payload
+  const participant = yield select((state) =>
+    getEntity(state, "participants", payload)
   );
-  if (participant) {
-    try {
-      yield call(
-        [VoxeetSDK.conference, VoxeetSDK.conference.startVideo],
-        participant,
-        { audio: true, video: true }
-      );
 
-      yield put(conference.videoStarted());
-    } catch (exception) {
-      // TODO: handle error
-    }
+  if (participant) {
+    yield call(start, participant);
   }
 }
 
 export function* stopVideo({ payload }) {
-  const participants = yield select((state) => state.conference.participants);
-  const participant = participants.find(
-    (participant) => participant.id === payload
+  const participant = yield select((state) =>
+    getEntity(state, "participants", payload)
   );
-  if (participant) {
-    try {
-      yield call(
-        [VoxeetSDK.conference, VoxeetSDK.conference.stopVideo],
-        participant
-      );
 
-      yield put(conference.videoStopped());
-    } catch (exception) {
-      //TODO: handle error
-    }
+  if (participant) {
+    yield call(stop, participant);
   }
 }

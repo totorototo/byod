@@ -1,7 +1,7 @@
 import { takeEvery } from "redux-saga/effects";
 
 import initialize from "./initialize";
-import { application } from "../../effects";
+import { authentication } from "../../effects";
 import { conference } from "../../actions";
 import { stopVideo, startVideo } from "./video";
 import { startAudio, stopAudio } from "./audio";
@@ -11,7 +11,7 @@ import { create, join, leave } from "./conference";
 import { startScreenShare, stopScreenShare } from "./screenshare";
 
 export default function* conferenceFlow() {
-  yield takeEvery(application.setToken, initialize);
+  yield takeEvery(authentication.setToken, initialize);
   yield takeEvery(conference.create, create);
   yield takeEvery(conference.join, join);
   yield takeEvery(conference.leave, leave);

@@ -1,7 +1,7 @@
 import { call, put, delay } from "redux-saga/effects";
 import { push } from "connected-react-router";
 
-import { application } from "../../effects";
+import { authentication } from "../../effects";
 
 export async function retrieveAccessToken() {
   const consumerKey = process.env.REACT_APP_CONSUMER_KEY;
@@ -31,7 +31,7 @@ export default function* authenticate() {
   const token = yield call(retrieveAccessToken);
 
   if (token) {
-    yield put(application.setToken({ token }));
+    yield put(authentication.setToken({ token }));
     yield delay(500);
     yield put(push("/sessionSettings"));
   }

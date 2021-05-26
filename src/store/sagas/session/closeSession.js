@@ -1,13 +1,11 @@
-import { call, put } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
+import { call } from "redux-saga/effects";
 
-import { session } from "../../effects";
+// import { session } from "../../effects";
+import { closeSession as close } from "../../services/session";
 
 export default function* closeSession() {
-  try {
-    yield call([VoxeetSDK.session, VoxeetSDK.session.close]);
-    yield put(session.closed());
-  } catch (exception) {
-    // TODO: handle exception
+  const exception = yield call(close);
+  if (!exception) {
+    // yield put(session.closed());
   }
 }

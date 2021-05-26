@@ -49,7 +49,6 @@ const Conference = ({
 
   return (
     <div className={className}>
-      {/*   <div className={"conference-details"}>{conferenceDetails.name}</div>*/}
       {Object.keys(screenSharingStream).length > 0 ? (
         <div className={"screen-share-wrapper"}>
           <AutoSizer>

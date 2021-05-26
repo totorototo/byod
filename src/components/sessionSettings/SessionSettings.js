@@ -18,7 +18,7 @@ const SessionSettings = ({ className, open }) => {
   return (
     <div className={className}>
       <div className={"container"}>
-        <h1>Bring Your Own Device</h1>
+        <h1>test app</h1>
         <div className={"icons"}>
           <UserPlus width={60} height={60} />
         </div>

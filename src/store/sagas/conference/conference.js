@@ -1,65 +1,98 @@
 import { call, put, select } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
 
-import { conference } from "../../effects";
+import { application } from "../../effects";
 import { push } from "connected-react-router";
+import {
+  removeEntity,
+  setEntities,
+  updateEntity,
+} from "../../effects/entities";
+import {
+  createConference,
+  getLocalParticipant,
+  joinConference,
+  leaveConference,
+} from "../../services/conference";
+import {
+  getCurrentConferenceID,
+  getLocalParticipantID,
+} from "../../reducers/application/selectors";
+import { getEntity } from "../../reducers/entities/selectors";
 
 export function* create({ payload }) {
-  const newConference = yield call(
-    [VoxeetSDK.conference, VoxeetSDK.conference.create],
+  const { entities: conferenceEntities, conferenceID } = yield call(
+    createConference,
     payload
   );
 
-  //TODO: hack
+  yield put(setEntities({ entities: conferenceEntities }));
+  yield put(application.setCurrentConferenceID({ id: conferenceID }));
+
+  // get local participant
+  const { participantID, entities: participantEntities } = yield call(
+    getLocalParticipant
+  );
+
+  yield put(setEntities({ entities: participantEntities }));
+
   yield put(
-    conference.setConferenceInfos({
-      id: newConference._id,
-      alias: newConference._alias,
-      status: newConference._status,
-      pinCode: newConference._pinCode,
-      isNew: newConference._isNew,
+    updateEntity({
+      id: conferenceID,
+      entityType: "conferences",
+      data: { participants: [participantID] },
     })
   );
 
-  const localParticipant = VoxeetSDK.session.participant;
+  yield put(application.setLocalParticipantID({ id: participantID }));
 
-  yield put(conference.setLocalParticipantID(localParticipant.id));
-  yield put(conference.participantAdded({ participant: localParticipant }));
-
-  yield* join({
-    payload: {
-      audio: true,
-      video: false,
-    },
-  });
+  const constraints = {
+    audio: true,
+    video: false,
+  };
+  yield call(join, { payload: constraints });
 }
 
 export function* join({ payload }) {
-  const savedConference = yield select((state) => state.conference.details);
+  const state = yield select((state) => state);
+  const currentConferenceID = getCurrentConferenceID(state);
+  const conference = getEntity(state, "conferences", currentConferenceID);
 
-  try {
-    const updatedConference = yield call(
-      [VoxeetSDK.conference, VoxeetSDK.conference.join],
-      savedConference,
-      {
-        constraints: payload,
-      }
-    );
+  const options = {
+    constraints: payload,
+  };
 
-    yield put(conference.setConferenceInfos(updatedConference));
-    yield put(push(`/conference/${updatedConference.id}`));
-  } catch (exception) {
-    // TODO: handle joining issue
-  }
+  // FIXME: do not want conference object to be modify by sdk.
+  const copy = { ...conference };
+
+  /*const { entities } =*/ yield call(joinConference, {
+    conference: copy,
+    options,
+  });
+
+  // NOTE: do not forget to update entities: object passed as ref!
+  // yield put(setEntities({ entities, origin: "join conference" }));
+  yield put(push(`/conference/${currentConferenceID}`));
 }
 
 export function* leave() {
-  try {
-    yield call([VoxeetSDK.conference, VoxeetSDK.conference.leave]);
-    yield put(conference.setConferenceInfos({}));
-    yield put(conference.setLocalParticipantID());
+  const error = yield call(leaveConference);
+  if (!error) {
+    const state = yield select((state) => state);
+    const currentConferenceID = getCurrentConferenceID(state);
+    const localParticipantID = getLocalParticipantID(state);
+    // remove conference entity
+    yield put(
+      removeEntity({ id: currentConferenceID, entityType: "conferences" })
+    );
+    // remove participant entity
+    yield put(
+      removeEntity({ id: localParticipantID, entityType: "participants" })
+    );
+
+    // remove participant entity
+    yield put(removeEntity({ id: localParticipantID, entityType: "streams" }));
+
+    yield put(application.leaveConference());
     yield put(push("/conferenceSettings"));
-  } catch (exception) {
-    // TODO: handle leaving exception
   }
 }

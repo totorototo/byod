@@ -1,3 +1,4 @@
+/*
 import {
   setConferenceInfos,
   participantAdded,
@@ -55,13 +56,13 @@ const handleStreamModification = (state, action) => {
 
   if (!currentParticipant) return state;
 
-  /* const filteredStreams = currentParticipant.streams.filter(
+  /!* const filteredStreams = currentParticipant.streams.filter(
     (stream) => !stream.hasOwnProperty("_audioTracks") //stream.id !== action.payload.stream.id
-  );*/
+  );*!/
 
   const updatedCurrentParticipant = {
     ...currentParticipant,
-    streams: [/*...filteredStreams,*/ action.payload.stream],
+    streams: [/!*...filteredStreams,*!/ action.payload.stream],
   };
 
   return { ...state, participants: [...others, updatedCurrentParticipant] };
@@ -187,3 +188,4 @@ export default handleEffects(
   },
   initialState
 );
+*/
