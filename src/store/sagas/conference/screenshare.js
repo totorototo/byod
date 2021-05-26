@@ -1,10 +1,14 @@
 import { call } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
+
+import {
+  startScreenShare as start,
+  stopScreenShare as stop,
+} from "../../services/screenShare";
 
 export function* startScreenShare() {
-  yield call([VoxeetSDK.conference, VoxeetSDK.conference.startScreenShare]);
+  yield call(start);
 }
 
 export function* stopScreenShare() {
-  yield call([VoxeetSDK.conference, VoxeetSDK.conference.stopScreenShare]);
+  yield call(stop);
 }
