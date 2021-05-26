@@ -153,13 +153,14 @@ function* handleStreamUpdate(
   const { streamID } = normalizeStream(stream);
 
   // screen sharing
-  if (stream.type === "ScreenShare" && participant.id !== localParticipant.id) {
-    //TODO: add stream id to conference screen share id
+  if (stream.type === "ScreenShare") {
     yield put(
       updateEntity({
         id: currentConference.id,
         entityType: "conferences",
-        data: { screenSharingStreams: [streamID] },
+        data: {
+          screenShareStreams: [{ streamID, participantID: participant.id }],
+        },
         origin: "stream added/update",
       })
     );
@@ -255,20 +256,43 @@ function* externalListener(channel) {
         // remove stream id from participant streams
         const { streamID } = normalizeStream(event.payload.stream);
 
-        // check valid
-        if (participant !== NotFoundEntity) {
+        if (event.payload.stream.type === "ScreenShare") {
+          const currentConferenceID = yield select((state) =>
+            getCurrentConferenceID(state)
+          );
+
+          const currentConference = yield select((state) =>
+            getEntity(state, "conferences", currentConferenceID)
+          );
+
           yield put(
             updateEntity({
-              id: event.payload.participant.id,
-              entityType: "participants",
+              id: currentConferenceID,
+              entityType: "conferences",
               origin: "stream removed",
               data: {
-                streams: participant.streams.filter(
-                  (stream) => stream.id !== streamID
+                screenShareStreams: currentConference.screenShareStreams.filter(
+                  (item) => item.streamID !== event.payload.stream.id
                 ),
               },
             })
           );
+        } else {
+          // check valid
+          if (participant !== NotFoundEntity) {
+            yield put(
+              updateEntity({
+                id: event.payload.participant.id,
+                entityType: "participants",
+                origin: "stream removed",
+                data: {
+                  streams: participant.streams.filter(
+                    (stream) => stream.id !== streamID
+                  ),
+                },
+              })
+            );
+          }
         }
 
         // remove stream obj

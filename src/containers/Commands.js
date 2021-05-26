@@ -60,12 +60,21 @@ const mapStateToProps = (state) => {
     getCurrentConferenceID(state)
   );
 
+  const screenShareStream =
+    conference.screenShareStreams &&
+    conference.screenShareStreams.length > 0 &&
+    conference.screenShareStreams[0];
+
+  const sharing =
+    screenShareStream &&
+    screenShareStream.participantID === localParticipant.id;
+
   return {
     localParticipantID: localParticipant.id,
     hasVideo: hasVideo(localParticipantStreams),
     hasAudio: hasAudio(localParticipantStreams),
     recording: !!conference.recording,
-    //screenSharing: state.conference.screenSharing,
+    screenSharing: sharing,
   };
 };
 

@@ -10,6 +10,7 @@ import {
   getEntity,
   getValidEntities,
 } from "../store/reducers/entities/selectors";
+import { NotFoundEntity } from "../dataDefinitions/defect";
 
 const mapStateToProps = (state) => {
   const hasVideo = (streams) => {
@@ -78,13 +79,31 @@ const mapStateToProps = (state) => {
     return { ...participant, streams, hasVideo: video, hasAudio: audio };
   });
 
+  const screenShareStream =
+    conference.screenShareStreams &&
+    conference.screenShareStreams.length > 0 &&
+    conference.screenShareStreams[0];
+
+  const stream =
+    screenShareStream && screenShareStream.streamID
+      ? getEntity(state, "streams", screenShareStream.streamID)
+      : {};
+
+  const participantID = screenShareStream && screenShareStream.participantID;
+
+  const str =
+    participantID === localParticipant.id || stream === NotFoundEntity
+      ? {}
+      : stream;
+
   return {
     localParticipant: updatedLocalParticipant,
     conference,
     remoteParticipants: updatedRemoteParticipants,
-    screenSharingStream: {},
+    screenSharingStream: str,
   };
 };
+
 const mapDispatchToProps = {
   leave: conference.leave,
   stopAudio: conference.stopAudio,
