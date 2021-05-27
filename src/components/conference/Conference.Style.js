@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import THEME from "../../theme/Theme";
+import Video from "../video/Video";
 
 const style = (Component) => styled(Component)`
   position: relative;
@@ -10,6 +11,13 @@ const style = (Component) => styled(Component)`
   height: 100%;
   align-items: center;
   justify-content: center;
+
+  > ${Video} {
+    position: absolute;
+    left: 1rem;
+    bottom: 4rem;
+    z-index: 200;
+  }
 
   .local-participant-video {
     position: absolute;
@@ -46,11 +54,13 @@ const style = (Component) => styled(Component)`
     place-items: center;
     grid-gap: 1rem;
     grid-template-columns: repeat(auto-fit, 1fr);
+    //grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 
     .remote-participant-wrapper {
       display: grid;
       width: 100%;
       height: 100%;
+      max-height: 15rem;
     }
 
     @media screen and (min-width: ${THEME.breakpoints[0]}) {

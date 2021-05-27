@@ -10,6 +10,7 @@ import { partition } from "../../helpers/fp";
 
 const Conference = ({
   className,
+  localParticipant,
   remoteParticipants,
   startVideo,
   stopVideo,
@@ -63,7 +64,14 @@ const Conference = ({
         </div>
       ) : (
         <>
-          <div className={"remote-participants-video"}>
+          {/*  {localParticipant.hasVideo && (
+            <Video
+              width={70}
+              height={80}
+              stream={localParticipant.streams[0]}
+            />
+          )}*/}
+          {/*  <div className={"remote-participants-video"}>
             {participantsWithVideo &&
               participantsWithVideo.length > 0 &&
               participantsWithVideo.map((participant, index) => (
@@ -93,6 +101,27 @@ const Conference = ({
                   key={index}
                 >
                   {participant.name.split(" ").map((n) => n[0])}
+                </div>
+              ))}
+          </div>*/}
+          <div className={"remote-participants-video"}>
+            {remoteParticipants &&
+              remoteParticipants.length > 0 &&
+              remoteParticipants.map((participant, index) => (
+                <div key={index} className={"remote-participant-wrapper"}>
+                  <AutoSizer>
+                    {({ width, height }) => (
+                      <Tile
+                        participant={participant}
+                        width={width}
+                        height={height}
+                        startAudio={startAudio}
+                        stopAudio={stopAudio}
+                        startVideo={startVideo}
+                        stopVideo={stopVideo}
+                      />
+                    )}
+                  </AutoSizer>
                 </div>
               ))}
           </div>

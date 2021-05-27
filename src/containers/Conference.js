@@ -98,7 +98,7 @@ const mapStateToProps = (state) => {
   return {
     localParticipant: updatedLocalParticipant,
     conference,
-    remoteParticipants: updatedRemoteParticipants,
+    remoteParticipants: [updatedLocalParticipant, ...updatedRemoteParticipants],
     screenSharingStream: str,
   };
 };

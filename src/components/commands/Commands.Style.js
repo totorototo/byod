@@ -14,7 +14,7 @@ const style = (Component) => styled(Component)`
   border-radius: 0.4rem;
 
   svg {
-    transition: stroke 0.5s ease, width 0.5s ease;
+    transition: stroke 0.5s ease;
     width: 1.3rem;
 
     &.recording-on {
