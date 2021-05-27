@@ -60,7 +60,7 @@ const style = (Component) => styled(Component)`
       display: grid;
       width: 100%;
       height: 100%;
-      max-height: 15rem;
+      //max-height: 15rem;
     }
 
     @media screen and (min-width: ${THEME.breakpoints[0]}) {
