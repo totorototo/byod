@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AutoSizer } from "react-virtualized";
 
 import style from "./Conference.Style";
 import Commands from "../../containers/Commands";
 import Tile from "../tile/Tile";
 import Video from "../video/Video";
-import { isMobile } from "../../helpers/device";
-import { partition } from "../../helpers/fp";
+/*import { isMobile } from "../../helpers/device";
+import { partition } from "../../helpers/fp";*/
 
 const Conference = ({
   className,
@@ -18,7 +18,7 @@ const Conference = ({
   stopAudio,
   screenSharingStream,
 }) => {
-  const [participantsWithVideo, setParticipantsWithVideo] = useState([]);
+  /* const [participantsWithVideo, setParticipantsWithVideo] = useState([]);
   const [participantsWithoutVideo, setParticipantsWithoutVideo] = useState([]);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const Conference = ({
       setParticipantsWithoutVideo(partitionedParticipants[1]);
     }
   }, [remoteParticipants]);
-
+*/
   return (
     <div className={className}>
       {Object.keys(screenSharingStream).length > 0 ? (
