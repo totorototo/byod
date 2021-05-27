@@ -18,30 +18,30 @@ const style = (Component) => styled(Component)`
     bottom: 1rem;
     right: 1rem;
     color: var(--color-text);
-    opacity: 0.6;
+    opacity: 0.2;
     font-size: 1rem;
+    font-weight: lighter;
   }
 
   .container {
     width: 40%;
-    max-width: 600px;
+    max-width: 400px;
     min-width: 250px;
     display: flex;
     flex-direction: column;
-    align-items: center;
 
-    h1 {
+    /*  h1 {
       font-family: "Cabin Sketch", cursive;
       color: var(--color-primary);
       text-transform: capitalize;
       font-size: 3.4rem;
       margin-bottom: 4rem;
       font-weight: 400;
-    }
+    }*/
 
     .icons {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       margin-bottom: 2.4rem;
       > svg {
@@ -55,9 +55,8 @@ const style = (Component) => styled(Component)`
       flex-direction: column;
 
       button {
-        width: 6rem;
         align-self: flex-end;
-        margin-top: 3rem;
+        margin-right: 0;
       }
     }
   }

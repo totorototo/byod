@@ -5,8 +5,6 @@ import {
   Cast,
   Video,
   VideoOff,
-  Settings,
-  MessageCircle,
   LogOut,
   Circle,
 } from "@styled-icons/feather";
@@ -60,17 +58,11 @@ const Commands = ({
       <ActionButton action={() => handleAudio()}>
         {hasAudio ? <Mic /> : <MicOff />}
       </ActionButton>
-      <ActionButton>
-        <MessageCircle />
-      </ActionButton>
       <ActionButton action={() => handleRecording()}>
         <Circle className={`recording-${recording ? "on" : "off"}`} />
       </ActionButton>
       <ActionButton action={() => handleScreenSharing()}>
         <Cast />
-      </ActionButton>
-      <ActionButton>
-        <Settings />
       </ActionButton>
       <ActionButton action={() => leave()}>
         <LogOut />

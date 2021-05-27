@@ -52,6 +52,7 @@ const ConferenceSettings = ({ className, create }) => {
           <button type="submit">join conference</button>
         </form>
       </div>
+      <div className={"dolby"}>powered by dolby.io</div>
     </div>
   );
 };

@@ -69,11 +69,10 @@ const mapStateToProps = (state) => {
     state,
     "participants",
     remoteParticipantsIDs
-  );
+  ).filter((participant) => participant.type !== "mixer");
 
   const updatedRemoteParticipants = remoteParticipants.map((participant) => {
     const streams = getValidEntities(state, "streams", participant.streams);
-
     const video = hasVideo(streams);
     const audio = hasAudio(streams);
     return { ...participant, streams, hasVideo: video, hasAudio: audio };

@@ -7,9 +7,20 @@ const style = (Component) => styled(Component)`
   justify-content: center;
   flex-direction: column;
   height: 100%;
+  position: relative;
 
   input::placeholder {
     transition: all 0.3s ease-in-out;
+  }
+
+  .dolby {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    color: var(--color-text);
+    opacity: 0.2;
+    font-size: 1rem;
+    font-weight: lighter;
   }
 
   .container {

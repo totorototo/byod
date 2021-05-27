@@ -4,13 +4,11 @@ import THEME from "../../theme/Theme";
 
 const style = (Component) => styled(Component)`
   display: flex;
-
   width: 60%;
   max-width: 500px;
-
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-gray-100);
+  //background-color: var(--color-gray-100);
   color: var(--color-primary);
   padding: 1rem;
   border-radius: 0.4rem;
