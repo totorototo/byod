@@ -7,7 +7,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import configureStore from "./store/store";
 import { application } from "./store/actions";
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from "./service-worker";
 
 const history = createBrowserHistory();
 
