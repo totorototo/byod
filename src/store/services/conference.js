@@ -3,22 +3,26 @@ import { normalize, schema } from "normalizr";
 import { pick } from "lodash";
 
 export const createConference = async (payload) => {
-  const conference = await VoxeetSDK.conference.create(payload);
-  const conferenceSchema = new schema.Entity(
-    "conferences",
-    {},
-    {
-      idAttribute: "id",
-      processStrategy: (entity) => pick(entity, ["alias", "pinCode", "id"]),
-    }
-  );
+  try {
+    const conference = await VoxeetSDK.conference.create(payload);
+    const conferenceSchema = new schema.Entity(
+      "conferences",
+      {},
+      {
+        idAttribute: "id",
+        processStrategy: (entity) => pick(entity, ["alias", "pinCode", "id"]),
+      }
+    );
 
-  const normalizedData = normalize(conference, conferenceSchema);
+    const normalizedData = normalize(conference, conferenceSchema);
 
-  return {
-    conferenceID: normalizedData.result,
-    entities: normalizedData.entities,
-  };
+    return {
+      conferenceID: normalizedData.result,
+      entities: normalizedData.entities,
+    };
+  } catch (exception) {
+    return exception;
+  }
 };
 
 export const getLocalParticipant = () => {
@@ -42,21 +46,28 @@ export const getLocalParticipant = () => {
 };
 
 export const joinConference = async ({ conference, options }) => {
-  const joinedConference = await VoxeetSDK.conference.join(conference, options);
-  const conferenceSchema = new schema.Entity(
-    "conferences",
-    {},
-    {
-      idAttribute: "id",
-      processStrategy: (entity) => pick(entity, ["alias", "pinCode", "id"]),
-    }
-  );
+  try {
+    const joinedConference = await VoxeetSDK.conference.join(
+      conference,
+      options
+    );
+    const conferenceSchema = new schema.Entity(
+      "conferences",
+      {},
+      {
+        idAttribute: "id",
+        processStrategy: (entity) => pick(entity, ["alias", "pinCode", "id"]),
+      }
+    );
 
-  const normalizedData = normalize(joinedConference, conferenceSchema);
-  return {
-    conferenceID: normalizedData.result,
-    entities: normalizedData.entities,
-  };
+    const normalizedData = normalize(joinedConference, conferenceSchema);
+    return {
+      conferenceID: normalizedData.result,
+      entities: normalizedData.entities,
+    };
+  } catch (exception) {
+    return exception;
+  }
 };
 
 export const leaveConference = async () => {

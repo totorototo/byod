@@ -10,7 +10,7 @@ const ThemeProvider = ({ children, theme }) => {
   };
 
   useEffect(() => {
-    const applyColorMode = (variant = "light") => {
+    const applyColorMode = (variant = "dark") => {
       Object.entries(theme.colors[variant]).forEach(([key, value]) => {
         document.documentElement.style.setProperty(key, value);
       });

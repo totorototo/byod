@@ -24,10 +24,11 @@ const SessionSettings = ({ className, open }) => {
           <Users width={40} height={40} />
           <UserPlus width={40} height={40} />
         </div>
-        <form onSubmit={handleSubmit}>
+        <form autoComplete="false" onSubmit={handleSubmit}>
           <div className="user-box">
             <input
-              type="text"
+              autoComplete="off"
+              type="search"
               name="userName"
               required
               value={userName}

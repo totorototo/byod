@@ -41,7 +41,8 @@ const ConferenceSettings = ({ className, create }) => {
         <form onSubmit={handleSubmit}>
           <div className="user-box">
             <input
-              type="text"
+              autoComplete="off"
+              type="search"
               name="conferenceName"
               required
               value={conferenceName}

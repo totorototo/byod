@@ -74,6 +74,7 @@ const style = (Component) => styled(Component)`
       border-bottom: 1px solid var(--color-primary);
       outline: none;
       background: transparent;
+
       :valid ~ label,
       :focus ~ label {
         top: -20px;

@@ -6,7 +6,7 @@ import ThemeProvider from "./components/themeProvider/ThemeProvider";
 import Router from "./components/router/Router";
 import Routes from "./components/routes/Routes";
 
-const setDefaultColors = (variant = "light") => {
+const setDefaultColors = (variant = "dark") => {
   return Object.entries(THEME.colors[variant]).reduce((accu, [rule, value]) => {
     return `${rule}:${value}; ${accu}`;
   }, "");
