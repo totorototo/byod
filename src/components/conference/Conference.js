@@ -138,7 +138,7 @@ const Conference = ({
         <Commands displayModal={toggle} />
       </div>
       <Modal isShowing={isShowing} hide={toggle}>
-        <Settings />
+        <Settings hide={toggle} />
       </Modal>
     </div>
   );

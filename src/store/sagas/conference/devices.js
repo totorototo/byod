@@ -92,13 +92,13 @@ export function* enumerateVideoDevices() {
 }
 
 export function* setAudioInput({ payload }) {
-  yield call(selectAudioInput, payload.id);
+  yield call(selectAudioInput, payload);
 }
 
 export function* setVideoInput({ payload }) {
-  yield call(selectVideoInput, payload.id);
+  yield call(selectVideoInput, payload);
 }
 
 export function* setAudioOutput({ payload }) {
-  yield call(selectAudioOutput, payload.id);
+  yield call(selectAudioOutput, payload);
 }

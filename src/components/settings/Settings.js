@@ -2,11 +2,15 @@ import React from "react";
 
 import style from "./Settings.Style";
 
-const Settings = ({ className, videoDevices, setVideoInput }) => {
+const Settings = ({ className, videoDevices, setVideoInput, hide }) => {
+  const handleSelection = (id) => {
+    setVideoInput(id);
+    hide();
+  };
   return (
     <div className={className}>
       {videoDevices.map((device, index) => (
-        <div onClick={() => setVideoInput(device.deviceId)} key={index}>
+        <div onClick={() => handleSelection(device.deviceId)} key={index}>
           {device.label}
         </div>
       ))}
