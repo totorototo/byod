@@ -39,6 +39,7 @@ const Commands = ({
   setAudioInput,
   setAudioOutput,
   setVideoInput,
+  displayModal,
 }) => {
   const handleVideo = () => {
     hasVideo ? stopVideo(localParticipantID) : startVideo(localParticipantID);
@@ -70,7 +71,7 @@ const Commands = ({
       <ActionButton action={() => handleScreenSharing()}>
         <Cast />
       </ActionButton>
-      <ActionButton action={() => listVideoDevices()}>
+      <ActionButton action={() => displayModal()}>
         <Settings />
       </ActionButton>
       <ActionButton action={() => leave()}>

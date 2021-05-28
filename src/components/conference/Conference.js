@@ -5,6 +5,9 @@ import style from "./Conference.Style";
 import Commands from "../../containers/Commands";
 import Tile from "../tile/Tile";
 import Video from "../video/Video";
+import useModal from "../hooks/useModal";
+import Modal from "../modal/Modal";
+import Settings from "../../containers/Settings";
 /*import { isMobile } from "../../helpers/device";
 import { partition } from "../../helpers/fp";*/
 
@@ -48,6 +51,9 @@ const Conference = ({
     }
   }, [remoteParticipants]);
 */
+
+  const { isShowing, toggle } = useModal();
+
   return (
     <div className={className}>
       {Object.keys(screenSharingStream).length > 0 ? (
@@ -129,8 +135,11 @@ const Conference = ({
       )}
 
       <div className={"main-commands-wrapper"}>
-        <Commands />
+        <Commands displayModal={toggle} />
       </div>
+      <Modal isShowing={isShowing} hide={toggle}>
+        <Settings />
+      </Modal>
     </div>
   );
 };
