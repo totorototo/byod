@@ -2,21 +2,14 @@ import { call, put, select } from "redux-saga/effects";
 
 import { application } from "../../effects";
 import { push } from "connected-react-router";
-import {
-  removeEntity,
-  setEntities,
-  updateEntity,
-} from "../../effects/entities";
+import { setEntities, updateEntity } from "../../effects/entities";
 import {
   createConference,
   getLocalParticipant,
   joinConference,
   leaveConference,
 } from "../../services/conference";
-import {
-  getCurrentConferenceID,
-  getLocalParticipantID,
-} from "../../reducers/application/selectors";
+import { getCurrentConferenceID } from "../../reducers/application/selectors";
 import { getEntity } from "../../reducers/entities/selectors";
 
 export function* create({ payload }) {
@@ -26,6 +19,7 @@ export function* create({ payload }) {
   );
 
   yield put(setEntities({ entities: conferenceEntities }));
+
   yield put(application.setCurrentConferenceID({ id: conferenceID }));
 
   // get local participant
@@ -77,22 +71,8 @@ export function* join({ payload }) {
 export function* leave() {
   const error = yield call(leaveConference);
   if (!error) {
-    const state = yield select((state) => state);
-    const currentConferenceID = getCurrentConferenceID(state);
-    const localParticipantID = getLocalParticipantID(state);
-    // remove conference entity
-    yield put(
-      removeEntity({ id: currentConferenceID, entityType: "conferences" })
-    );
-    // remove participant entity
-    yield put(
-      removeEntity({ id: localParticipantID, entityType: "participants" })
-    );
-
-    // remove participant entity
-    yield put(removeEntity({ id: localParticipantID, entityType: "streams" }));
-
     yield put(application.leaveConference());
+
     yield put(push("/conferenceSettings"));
   }
 }

@@ -13,7 +13,6 @@ export default function* initialize() {
   });
 
   if (!exception) {
-    // TODO: useful?
     yield put(application.sdkInitialized());
   }
 }

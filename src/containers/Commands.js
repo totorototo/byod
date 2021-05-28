@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { conference } from "../store/actions";
+import { conference, devices } from "../store/actions";
 import Commands from "../components/commands/Commands";
 import {
   getCurrentConferenceID,
@@ -21,6 +21,11 @@ const mapDispatchToProps = {
   stopAudio: conference.stopAudio,
   startScreenShare: conference.startScreenShare,
   stopScreenShare: conference.stopScreenShare,
+  listAudioDevices: devices.listAudioDevices,
+  listVideoDevices: devices.listVideoDevices,
+  setAudioInput: devices.setAudioInput,
+  setAudioOutput: devices.setAudioOutput,
+  setVideoInput: devices.setVideoInput,
 };
 
 const mapStateToProps = (state) => {

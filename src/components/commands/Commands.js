@@ -7,6 +7,7 @@ import {
   VideoOff,
   LogOut,
   Circle,
+  Settings,
 } from "@styled-icons/feather";
 
 import style from "./Commands.Style";
@@ -33,6 +34,11 @@ const Commands = ({
   startScreenShare,
   stopScreenShare,
   screenSharing,
+  listAudioDevices,
+  listVideoDevices,
+  setAudioInput,
+  setAudioOutput,
+  setVideoInput,
 }) => {
   const handleVideo = () => {
     hasVideo ? stopVideo(localParticipantID) : startVideo(localParticipantID);
@@ -63,6 +69,9 @@ const Commands = ({
       </ActionButton>
       <ActionButton action={() => handleScreenSharing()}>
         <Cast />
+      </ActionButton>
+      <ActionButton action={() => listVideoDevices()}>
+        <Settings />
       </ActionButton>
       <ActionButton action={() => leave()}>
         <LogOut />

@@ -7,6 +7,7 @@ import {
   updateEntity,
 } from "../../effects/entities";
 import { handleEffects } from "../../utils/store";
+import { leaveConference } from "../../effects/application";
 
 const initialState = {};
 
@@ -47,6 +48,7 @@ export default handleEffects(
         },
       };
     },
+    [leaveConference]: () => initialState,
   },
   initialState
 );
