@@ -17,8 +17,8 @@ const style = (Component) => styled(Component)`
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-    color: var(--color-text);
-    opacity: 0.2;
+    color: var(--color-venn-1);
+    // opacity: 0.2;
     font-size: 1rem;
     font-weight: lighter;
   }

@@ -1,6 +1,6 @@
 import VoxeetSDK from "@voxeet/voxeet-web-sdk";
 import { schema, normalize } from "normalizr";
-import { pick } from "lodash";
+import pick from "lodash.pick";
 
 export const listAudioDevices = async () => {
   try {
