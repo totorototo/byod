@@ -30,16 +30,6 @@ const style = (Component) => styled(Component)`
     display: flex;
     flex-direction: column;
 
-    .icons {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2.4rem;
-      > svg {
-        stroke: var(--color-primary);
-      }
-    }
-
     form {
       display: flex;
       flex: 1;

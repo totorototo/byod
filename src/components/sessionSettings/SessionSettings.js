@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { UserPlus, LogIn, Phone, Users } from "@styled-icons/feather";
 
 import style from "./SessionSettings.Style";
 
@@ -18,12 +17,6 @@ const SessionSettings = ({ className, open }) => {
   return (
     <div className={className}>
       <div className={"container"}>
-        <div className={"icons"}>
-          <LogIn width={40} height={40} />
-          <Phone width={40} height={40} />
-          <Users width={40} height={40} />
-          <UserPlus width={40} height={40} />
-        </div>
         <form autoComplete="false" onSubmit={handleSubmit}>
           <div className="user-box">
             <input

@@ -30,25 +30,6 @@ const style = (Component) => styled(Component)`
     display: flex;
     flex-direction: column;
 
-    /*  h1 {
-      font-family: "Cabin Sketch", cursive;
-      color: var(--color-primary);
-      text-transform: capitalize;
-      font-size: 3.4rem;
-      margin-bottom: 4rem;
-      font-weight: 400;
-    }*/
-
-    .icons {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2.4rem;
-      > svg {
-        stroke: var(--color-primary);
-      }
-    }
-
     form {
       display: flex;
       flex: 1;

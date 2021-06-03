@@ -1,10 +1,4 @@
 import React, { useState } from "react";
-import {
-  Headphones,
-  MessageCircle,
-  Video,
-  Voicemail,
-} from "@styled-icons/feather";
 
 import style from "./ConferenceSettings.Style";
 
@@ -32,12 +26,6 @@ const ConferenceSettings = ({ className, create }) => {
   return (
     <div className={className}>
       <div className={"container"}>
-        <div className={"icons"}>
-          <Headphones width={40} height={40} />
-          <MessageCircle width={40} height={40} />
-          <Video width={40} height={40} />
-          <Voicemail width={40} height={40} />
-        </div>
         <form onSubmit={handleSubmit}>
           <div className="user-box">
             <input
