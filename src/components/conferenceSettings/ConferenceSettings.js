@@ -29,6 +29,7 @@ const ConferenceSettings = ({ className, create }) => {
         <form onSubmit={handleSubmit}>
           <div className="user-box">
             <input
+              id="conferenceName"
               autoComplete="off"
               type="search"
               name="conferenceName"
@@ -36,7 +37,7 @@ const ConferenceSettings = ({ className, create }) => {
               value={conferenceName}
               onChange={handleConferenceNameChange}
             />
-            <label>Conference name</label>
+            <label htmlFor="conferenceName">Conference name</label>
           </div>
           <button type="submit">join conference</button>
         </form>

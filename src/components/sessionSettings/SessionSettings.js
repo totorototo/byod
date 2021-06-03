@@ -20,6 +20,7 @@ const SessionSettings = ({ className, open }) => {
         <form autoComplete="false" onSubmit={handleSubmit}>
           <div className="user-box">
             <input
+              id={"sessionName"}
               autoComplete="off"
               type="search"
               name="userName"
@@ -27,7 +28,7 @@ const SessionSettings = ({ className, open }) => {
               value={userName}
               onChange={handleUserNameChange}
             />
-            <label>User name</label>
+            <label htmlFor={"sessionName"}>User name</label>
           </div>
           <button type="submit">open session</button>
         </form>
