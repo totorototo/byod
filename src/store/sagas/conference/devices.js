@@ -7,7 +7,8 @@ import {
   selectAudioOutput,
   selectVideoInput,
 } from "../../services/devices";
-import { setEntity, updateEntity } from "../../effects/entities";
+
+import { deviceAdded, participantUpdated } from "../../effects/conference";
 import { getLocalParticipantID } from "../../reducers/application/selectors";
 import { getEntity } from "../../reducers/entities/selectors";
 
@@ -18,11 +19,10 @@ export function* enumerateAudioDevices() {
     yield all(
       Object.entries(entities).map(([id, value]) =>
         put(
-          setEntity({
+          deviceAdded({
             id,
             data: value,
             entityType: "devices",
-            origin: "enumerate audio devices",
           })
         )
       )
@@ -40,11 +40,10 @@ export function* enumerateAudioDevices() {
 
     if (participant) {
       yield put(
-        updateEntity({
+        participantUpdated({
           id: participantID,
           entityType: "participants",
           data: { audioDevices: updatedDeviceIds },
-          origin: "enumerate audio devices",
         })
       );
     }
@@ -58,11 +57,10 @@ export function* enumerateVideoDevices() {
     yield all(
       Object.entries(entities).map(([id, value]) =>
         put(
-          setEntity({
+          deviceAdded({
             id,
             data: value,
             entityType: "devices",
-            origin: "enumerate video devices",
           })
         )
       )
@@ -80,11 +78,10 @@ export function* enumerateVideoDevices() {
 
     if (participant) {
       yield put(
-        updateEntity({
+        participantUpdated({
           id: participantID,
           entityType: "participants",
           data: { videoDevices: updatedDeviceIds },
-          origin: "enumerate video devices",
         })
       );
     }

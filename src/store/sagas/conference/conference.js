@@ -2,7 +2,7 @@ import { call, put, select } from "redux-saga/effects";
 
 import { application } from "../../effects";
 import { push } from "connected-react-router";
-import { setEntities, updateEntity } from "../../effects/entities";
+
 import {
   createConference,
   getLocalParticipant,
@@ -11,6 +11,11 @@ import {
 } from "../../services/conference";
 import { getCurrentConferenceID } from "../../reducers/application/selectors";
 import { getEntity } from "../../reducers/entities/selectors";
+import {
+  conferenceAdded,
+  conferenceUpdated,
+  participantAdded,
+} from "../../effects/conference";
 
 export function* create({ payload }) {
   const { entities: conferenceEntities, conferenceID } = yield call(
@@ -18,7 +23,13 @@ export function* create({ payload }) {
     payload
   );
 
-  yield put(setEntities({ entities: conferenceEntities }));
+  yield put(
+    conferenceAdded({
+      id: conferenceID,
+      data: conferenceEntities.conferences,
+      entityType: "conferences",
+    })
+  );
 
   yield put(application.setCurrentConferenceID({ id: conferenceID }));
 
@@ -27,10 +38,16 @@ export function* create({ payload }) {
     getLocalParticipant
   );
 
-  yield put(setEntities({ entities: participantEntities }));
+  yield put(
+    participantAdded({
+      id: participantID,
+      data: participantEntities.participants,
+      entityType: "participants",
+    })
+  );
 
   yield put(
-    updateEntity({
+    conferenceUpdated({
       id: conferenceID,
       entityType: "conferences",
       data: { participants: [participantID] },

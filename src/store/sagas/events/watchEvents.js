@@ -14,7 +14,17 @@ import { normalize, schema } from "normalizr";
 
 import { application } from "../../actions";
 import { conference } from "../../effects";
-import { removeEntity, updateEntity, setEntity } from "../../effects/entities";
+
+import {
+  participantAdded,
+  participantUpdated,
+  participantRemoved,
+  streamAdded,
+  streamUpdated,
+  streamRemoved,
+  conferenceUpdated,
+} from "../../effects/conference";
+
 import pick from "lodash.pick";
 import { getEntity } from "../../reducers/entities/selectors";
 import {
@@ -144,7 +154,8 @@ function* handleStreamUpdate(
   stream,
   participant,
   localParticipant,
-  currentConference
+  currentConference,
+  add = false
 ) {
   if (!participant || !stream) return;
 
@@ -155,35 +166,42 @@ function* handleStreamUpdate(
   // screen sharing
   if (stream.type === "ScreenShare") {
     yield put(
-      updateEntity({
+      conferenceUpdated({
         id: currentConference.id,
         entityType: "conferences",
         data: {
           screenShareStreams: [{ streamID, participantID: participant.id }],
         },
-        origin: "stream added/update",
       })
     );
   } else {
     yield put(
-      updateEntity({
+      participantUpdated({
         id: participant.id,
         entityType: "participants",
         data: { streams: [streamID] },
-        origin: "stream added",
       })
     );
   }
 
   // update stream objs and participant stream list ids
-  yield put(
-    setEntity({
-      id: streamID,
-      data: { [streamID]: stream }, // Do not normalize
-      entityType: "streams",
-      origin: "stream added",
-    })
-  );
+  if (add) {
+    yield put(
+      streamAdded({
+        id: streamID,
+        data: { [streamID]: stream }, // Do not normalize
+        entityType: "streams",
+      })
+    );
+  } else {
+    yield put(
+      streamUpdated({
+        id: streamID,
+        data: { [streamID]: stream }, // Do not normalize
+        entityType: "streams",
+      })
+    );
+  }
 }
 
 function* externalListener(channel) {
@@ -213,7 +231,8 @@ function* externalListener(channel) {
           event.payload.stream,
           event.payload.participant,
           localParticipant,
-          currentConference
+          currentConference,
+          true
         );
 
         break;
@@ -241,7 +260,8 @@ function* externalListener(channel) {
           event.payload.stream,
           event.payload.participant,
           localParticipant,
-          currentConference
+          currentConference,
+          false
         );
 
         break;
@@ -266,10 +286,10 @@ function* externalListener(channel) {
           );
 
           yield put(
-            updateEntity({
+            conferenceUpdated({
               id: currentConferenceID,
               entityType: "conferences",
-              origin: "stream removed",
+
               data: {
                 screenShareStreams: currentConference.screenShareStreams.filter(
                   (item) => item.streamID !== event.payload.stream.id
@@ -281,10 +301,10 @@ function* externalListener(channel) {
           // check valid
           if (participant !== NotFoundEntity) {
             yield put(
-              updateEntity({
+              participantUpdated({
                 id: event.payload.participant.id,
                 entityType: "participants",
-                origin: "stream removed",
+
                 data: {
                   streams: participant.streams.filter(
                     (stream) => stream.id !== streamID
@@ -297,10 +317,9 @@ function* externalListener(channel) {
 
         // remove stream obj
         yield put(
-          removeEntity({
+          streamRemoved({
             id: event.payload.stream.id,
             entityType: "streams",
-            origin: "stream removed",
           })
         );
 
@@ -310,10 +329,9 @@ function* externalListener(channel) {
       case "participantRemoved": {
         // remove participant obj
         yield put(
-          removeEntity({
+          participantRemoved({
             id: event.payload.participant.id,
             entityType: "participants",
-            origin: "participant removed",
           })
         );
 
@@ -327,10 +345,10 @@ function* externalListener(channel) {
         );
 
         yield put(
-          updateEntity({
+          conferenceUpdated({
             id: conferenceID,
             entityType: "conferences",
-            origin: "participant removed",
+
             data: {
               participants: conference.participants.filter(
                 (participant) => participant.id !== event.payload.participant.id
@@ -347,10 +365,9 @@ function* externalListener(channel) {
         const hasLeft = event.payload.participant.status === "Left";
         if (hasLeft) {
           yield put(
-            removeEntity({
+            participantRemoved({
               id: event.payload.participant.id,
               entityType: "participants",
-              origin: "participant removed",
             })
           );
           break;
@@ -362,11 +379,10 @@ function* externalListener(channel) {
         } = normalizeParticipant(event.payload.participant);
 
         yield put(
-          updateEntity({
+          participantUpdated({
             id: participantID,
             entityType: "participants",
             data: { ...participants[participantID] },
-            origin: "participant updated",
           })
         );
 
@@ -389,23 +405,21 @@ function* externalListener(channel) {
 
         // add participant
         yield put(
-          setEntity({
+          participantAdded({
             id: participantID,
             data: participants,
             entityType: "participants",
-            origin: "participant added",
           })
         );
 
         //add participant to conference participant list
         yield put(
-          updateEntity({
+          conferenceUpdated({
             id: conferenceID,
             entityType: "conferences",
             data: {
               participants: [...conference.participants, participantID],
             },
-            origin: "participant added",
           })
         );
 
