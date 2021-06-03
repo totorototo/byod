@@ -15,7 +15,7 @@ import { normalize, schema } from "normalizr";
 import { application } from "../../actions";
 import { conference } from "../../effects";
 import { removeEntity, updateEntity, setEntity } from "../../effects/entities";
-import { pick } from "lodash";
+import pick from "lodash.pick";
 import { getEntity } from "../../reducers/entities/selectors";
 import {
   getCurrentConferenceID,

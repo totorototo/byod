@@ -1,6 +1,6 @@
 import VoxeetSDK from "@voxeet/voxeet-web-sdk";
 import { normalize, schema } from "normalizr";
-import { pick } from "lodash";
+import pick from "lodash.pick";
 
 export const createConference = async (payload) => {
   try {
