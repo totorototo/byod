@@ -33,8 +33,6 @@ const SessionSettings = ({ className, open }) => {
           <button type="submit">open session</button>
         </form>
       </div>
-
-      <div className={"dolby"}>powered by dolby.io</div>
     </div>
   );
 };
