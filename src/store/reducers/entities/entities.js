@@ -1,34 +1,34 @@
 import omit from "lodash.omit";
 
-import {
+/*import {
   removeEntity,
   setEntities,
   setEntity,
   updateEntity,
-} from "../../effects/entities";
+} from "../../effects/entities";*/
 import {
-  participantAdded,
-  participantUpdated,
-  participantRemoved,
-  streamAdded,
-  streamUpdated,
-  streamRemoved,
-  conferenceAdded,
-  conferenceUpdated,
-  deviceAdded,
-  deviceUpdated,
+  addConference,
+  addDevice,
+  addParticipant,
+  addStream,
+  removeParticipant,
+  removeStream,
+  updateConference,
+  updateDevice,
+  updateParticipant,
+  updateStream,
 } from "../../effects/conference";
 import { handleEffects } from "../../utils/store";
 import { leaveConference } from "../../effects/application";
 
 const initialState = {};
 
-const setEntitiesReducer = (state, action) => {
+/*const setEntitiesReducer = (state, action) => {
   return {
     ...state,
     ...action.payload.entities,
   };
-};
+};*/
 
 const setEntityReducer = (state, action) => ({
   ...state,
@@ -64,21 +64,21 @@ const updateEntityReducer = (state, action) => {
 
 export default handleEffects(
   {
-    [setEntities]: setEntitiesReducer,
+    /*  [setEntities]: setEntitiesReducer,
     [setEntity]: setEntityReducer,
     [removeEntity]: removeEntityReducer,
-    [updateEntity]: updateEntityReducer,
+    [updateEntity]: updateEntityReducer,*/
     [leaveConference]: () => initialState,
-    [participantAdded]: setEntityReducer,
-    [participantUpdated]: updateEntityReducer,
-    [participantRemoved]: removeEntityReducer,
-    [streamAdded]: setEntityReducer,
-    [streamRemoved]: removeEntityReducer,
-    [streamUpdated]: setEntityReducer,
-    [conferenceUpdated]: updateEntityReducer,
-    [deviceAdded]: setEntityReducer,
-    [deviceUpdated]: updateEntityReducer,
-    [conferenceAdded]: setEntityReducer,
+    [addParticipant]: setEntityReducer,
+    [updateParticipant]: updateEntityReducer,
+    [removeParticipant]: removeEntityReducer,
+    [addStream]: setEntityReducer,
+    [removeStream]: removeEntityReducer,
+    [updateStream]: setEntityReducer,
+    [updateConference]: updateEntityReducer,
+    [addDevice]: setEntityReducer,
+    [updateDevice]: updateEntityReducer,
+    [addConference]: setEntityReducer,
   },
   initialState
 );

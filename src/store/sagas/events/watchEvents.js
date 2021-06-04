@@ -16,13 +16,13 @@ import { application } from "../../actions";
 import { conference } from "../../effects";
 
 import {
-  participantAdded,
-  participantUpdated,
-  participantRemoved,
-  streamAdded,
-  streamUpdated,
-  streamRemoved,
-  conferenceUpdated,
+  addParticipant,
+  addStream,
+  removeParticipant,
+  removeStream,
+  updateConference,
+  updateParticipant,
+  updateStream,
 } from "../../effects/conference";
 
 import pick from "lodash.pick";
@@ -138,11 +138,12 @@ function normalizeParticipant(participant) {
     {
       idAttribute: "id",
       processStrategy: (entity) => {
-        const val = pick(entity, ["type", "id"]);
+        const val = pick(entity, ["type", "id", "status"]);
         return { ...val, name: entity.info.name };
       },
     }
   );
+
   const normalizedData = normalize(participant, participantSchema);
   return {
     participantID: normalizedData.result,
@@ -166,7 +167,7 @@ function* handleStreamUpdate(
   // screen sharing
   if (stream.type === "ScreenShare") {
     yield put(
-      conferenceUpdated({
+      updateConference({
         id: currentConference.id,
         entityType: "conferences",
         data: {
@@ -176,7 +177,7 @@ function* handleStreamUpdate(
     );
   } else {
     yield put(
-      participantUpdated({
+      updateParticipant({
         id: participant.id,
         entityType: "participants",
         data: { streams: [streamID] },
@@ -187,7 +188,7 @@ function* handleStreamUpdate(
   // update stream objs and participant stream list ids
   if (add) {
     yield put(
-      streamAdded({
+      addStream({
         id: streamID,
         data: { [streamID]: stream }, // Do not normalize
         entityType: "streams",
@@ -195,7 +196,7 @@ function* handleStreamUpdate(
     );
   } else {
     yield put(
-      streamUpdated({
+      updateStream({
         id: streamID,
         data: { [streamID]: stream }, // Do not normalize
         entityType: "streams",
@@ -286,7 +287,7 @@ function* externalListener(channel) {
           );
 
           yield put(
-            conferenceUpdated({
+            updateConference({
               id: currentConferenceID,
               entityType: "conferences",
 
@@ -301,7 +302,7 @@ function* externalListener(channel) {
           // check valid
           if (participant !== NotFoundEntity) {
             yield put(
-              participantUpdated({
+              updateParticipant({
                 id: event.payload.participant.id,
                 entityType: "participants",
 
@@ -317,7 +318,7 @@ function* externalListener(channel) {
 
         // remove stream obj
         yield put(
-          streamRemoved({
+          removeStream({
             id: event.payload.stream.id,
             entityType: "streams",
           })
@@ -329,7 +330,7 @@ function* externalListener(channel) {
       case "participantRemoved": {
         // remove participant obj
         yield put(
-          participantRemoved({
+          removeParticipant({
             id: event.payload.participant.id,
             entityType: "participants",
           })
@@ -345,7 +346,7 @@ function* externalListener(channel) {
         );
 
         yield put(
-          conferenceUpdated({
+          updateConference({
             id: conferenceID,
             entityType: "conferences",
 
@@ -365,7 +366,7 @@ function* externalListener(channel) {
         const hasLeft = event.payload.participant.status === "Left";
         if (hasLeft) {
           yield put(
-            participantRemoved({
+            removeParticipant({
               id: event.payload.participant.id,
               entityType: "participants",
             })
@@ -379,7 +380,7 @@ function* externalListener(channel) {
         } = normalizeParticipant(event.payload.participant);
 
         yield put(
-          participantUpdated({
+          updateParticipant({
             id: participantID,
             entityType: "participants",
             data: { ...participants[participantID] },
@@ -405,7 +406,7 @@ function* externalListener(channel) {
 
         // add participant
         yield put(
-          participantAdded({
+          addParticipant({
             id: participantID,
             data: participants,
             entityType: "participants",
@@ -414,7 +415,7 @@ function* externalListener(channel) {
 
         //add participant to conference participant list
         yield put(
-          conferenceUpdated({
+          updateConference({
             id: conferenceID,
             entityType: "conferences",
             data: {

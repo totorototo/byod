@@ -9,50 +9,35 @@ import {
   call,
   all,
 } from "redux-saga/effects";
-import VoxeetSDK from "@voxeet/voxeet-web-sdk";
+import { isSpeaking as isSpeakingService } from "../../services/speaker";
 
 import { stopBackgroundTask } from "../../actions/conference";
 import { conference } from "../../effects";
+import { participantUpdated } from "../../effects/conference";
 
 //let participantId;
 function* bgSync(participant) {
   let isSpeaking;
-  let audioLevel;
+
   const handleSpeakingStatus = (status) => {
     isSpeaking = status;
-  };
-  const handleAudioLevel = (level) => {
-    audioLevel = level;
   };
 
   try {
     while (true) {
       try {
         // effects will get executed in parallel
-        yield all([
-          call(
-            [VoxeetSDK.conference, VoxeetSDK.conference.isSpeaking],
-            participant,
-            handleSpeakingStatus
-          ),
-          call(
-            [VoxeetSDK.conference, VoxeetSDK.conference.audioLevel],
-            participant,
-            handleAudioLevel
-          ),
-        ]);
+        yield all([call(isSpeakingService, participant, handleSpeakingStatus)]);
 
         yield put(
-          conference.participantAudioStatus({
+          participantUpdated({
             id: participant.id,
-            isSpeaking,
-            audioLevel,
+            entityType: "participants",
+            data: { ...participant, isSpeaking },
           })
         );
 
-        console.log(
-          `${participant.info.name}: audio-level: ${audioLevel}, speaking:${isSpeaking}`
-        );
+        console.log(`${participant.name}: speaking:${isSpeaking}`);
       } catch (error) {
         console.log("hack - sdk issue");
       }
@@ -67,8 +52,8 @@ function* bgSync(participant) {
   }
 }
 
-export function* watchParticipant({ payload: { participant } }) {
-  const bgSyncTask = yield fork(bgSync, participant);
+export function* watchParticipant({ payload: { data, id } }) {
+  const bgSyncTask = yield fork(bgSync, data[id]);
 
   while (true) {
     console.log("waiting for participant updated");
@@ -84,8 +69,9 @@ export function* watchParticipant({ payload: { participant } }) {
     }
 
     if (
-      participant.id === update.payload.participant.id &&
-      update.payload.participant.status === "Left"
+      id === update.payload.id &&
+      update.payload.data.status &&
+      update.payload.data.status === "Left"
     ) {
       yield cancel(bgSyncTask);
       break;

@@ -12,9 +12,9 @@ import {
 import { getCurrentConferenceID } from "../../reducers/application/selectors";
 import { getEntity } from "../../reducers/entities/selectors";
 import {
-  conferenceAdded,
-  conferenceUpdated,
-  participantAdded,
+  addConference,
+  updateConference,
+  addParticipant,
 } from "../../effects/conference";
 
 export function* create({ payload }) {
@@ -24,7 +24,7 @@ export function* create({ payload }) {
   );
 
   yield put(
-    conferenceAdded({
+    addConference({
       id: conferenceID,
       data: conferenceEntities.conferences,
       entityType: "conferences",
@@ -39,7 +39,7 @@ export function* create({ payload }) {
   );
 
   yield put(
-    participantAdded({
+    addParticipant({
       id: participantID,
       data: participantEntities.participants,
       entityType: "participants",
@@ -47,7 +47,7 @@ export function* create({ payload }) {
   );
 
   yield put(
-    conferenceUpdated({
+    updateConference({
       id: conferenceID,
       entityType: "conferences",
       data: { participants: [participantID] },

@@ -3,7 +3,7 @@ import { call, select, put } from "redux-saga/effects";
 import { startRecording, stopRecording } from "../../services/record";
 import { getEntity } from "../../reducers/entities/selectors";
 import { getCurrentConferenceID } from "../../reducers/application/selectors";
-import { conferenceUpdated } from "../../effects/conference";
+import { updateConference } from "../../effects/conference";
 
 export function* stopRecordingConference() {
   yield call(stopRecording);
@@ -17,7 +17,7 @@ export function* stopRecordingConference() {
   );
 
   yield put(
-    conferenceUpdated({
+    updateConference({
       id: conference.id,
       entityType: "conferences",
       data: { recording: false },
@@ -37,7 +37,7 @@ export function* recordConference() {
   );
 
   yield put(
-    conferenceUpdated({
+    updateConference({
       id: conference.id,
       entityType: "conferences",
       data: { recording: true },

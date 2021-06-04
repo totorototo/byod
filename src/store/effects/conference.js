@@ -1,20 +1,20 @@
 import { createEffect } from "../utils/store";
 
-export const streamAdded = createEffect("STREAM_ADDED");
-export const streamUpdated = createEffect("STREAM_UPDATED");
-export const streamRemoved = createEffect("STREAM_REMOVED");
+export const addStream = createEffect("ADD_STREAM");
+export const updateStream = createEffect("UPDATE_STREAM");
+export const removeStream = createEffect("REMOVE_STREAM");
 
-export const participantAdded = createEffect("PARTICIPANT_ADDED");
-export const participantRemoved = createEffect("PARTICIPANT_REMOVED");
-export const participantUpdated = createEffect("PARTICIPANT_UPDATED");
+export const addParticipant = createEffect("ADD_PARTICIPANT_ADDED");
+export const removeParticipant = createEffect("REMOVE_PARTICIPANT");
+export const updateParticipant = createEffect("UPDATE_PARTICIPANT");
 
-export const conferenceAdded = createEffect("CONFERENCE_ADDED");
-export const conferenceUpdated = createEffect("CONFERENCE_UPDATED");
-export const conferenceRemoved = createEffect("CONFERENCE_REMOVED");
+export const addConference = createEffect("ADD_CONFERENCE");
+export const updateConference = createEffect("UPDATE_CONFERENCE");
+export const removeConference = createEffect("REMOVE_CONFERENCE");
 
-export const deviceAdded = createEffect("DEVICE_ADDED");
-export const deviceUpdated = createEffect("DEVICE_UPDATED");
-export const deviceRemoved = createEffect("DEVICE_REMOVED");
+export const addDevice = createEffect("ADD_DEVICE");
+export const updateDevice = createEffect("UPDATE_DEVICE");
+export const removeDevice = createEffect("REMOVE_DEVICE");
 
 export const created = createEffect("CREATED");
 export const joined = createEffect("JOINED");
