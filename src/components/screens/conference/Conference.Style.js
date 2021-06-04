@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import THEME from "../../theme/Theme";
-import Video from "../video/Video";
+import THEME from "../../../theme/Theme";
+import Video from "../../technical/video/Video";
 
 const style = (Component) => styled(Component)`
   position: relative;

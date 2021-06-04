@@ -2,12 +2,12 @@ import React from "react";
 import { AutoSizer } from "react-virtualized";
 
 import style from "./Conference.Style";
-import Commands from "../../containers/Commands";
-import Tile from "../tile/Tile";
-import Video from "../video/Video";
-import useModal from "../hooks/useModal";
-import Modal from "../modal/Modal";
-import Settings from "../../containers/Settings";
+import Commands from "../../../containers/Commands";
+import Tile from "../../technical/tile/Tile";
+import Video from "../../technical/video/Video";
+import useModal from "../../technical/hooks/useModal";
+import Modal from "../../technical/modal/Modal";
+import Settings from "../../../containers/Settings";
 /*import { isMobile } from "../../helpers/device";
 import { partition } from "../../helpers/fp";*/
 

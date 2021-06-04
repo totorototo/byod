@@ -3,10 +3,10 @@ import { Switch, Route } from "react-router";
 
 import style from "./Routes.Style";
 import useRouter from "../router/useRouter";
-import Authentication from "../authentication/Authentication";
-import SessionSettings from "../../containers/SessionSettings";
-import ConferenceSettings from "../../containers/ConferenceSettings";
-import Conference from "../../containers/Conference";
+import Authentication from "../../screens/authentication/Authentication";
+import SessionSettings from "../../../containers/SessionSettings";
+import ConferenceSettings from "../../../containers/ConferenceSettings";
+import Conference from "../../../containers/Conference";
 
 const Routes = ({ className }) => {
   const { location } = useRouter();

@@ -9,7 +9,7 @@ import {
   getEntity,
   getValidEntities,
 } from "../store/reducers/entities/selectors";
-import Settings from "../components/settings/Settings";
+import Settings from "../components/screens/settings/Settings";
 
 const mapDispatchToProps = {
   setAudioInput: devices.setAudioInput,

@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { conference } from "../store/actions";
-import Conference from "../components/conference/Conference";
+import Conference from "../components/screens/conference/Conference";
 import {
   getCurrentConferenceID,
   getLocalParticipantID,

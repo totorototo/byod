@@ -2,9 +2,9 @@ import { createGlobalStyle } from "styled-components";
 import React from "react";
 
 import THEME from "./theme/Theme";
-import ThemeProvider from "./components/themeProvider/ThemeProvider";
-import Router from "./components/router/Router";
-import Routes from "./components/routes/Routes";
+import ThemeProvider from "./components/technical/themeProvider/ThemeProvider";
+import Router from "./components/technical/router/Router";
+import Routes from "./components/technical/routes/Routes";
 
 const setDefaultColors = (variant = "dark") => {
   return Object.entries(THEME.colors[variant]).reduce((accu, [rule, value]) => {

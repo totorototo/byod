@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import THEME from "../../theme/Theme";
+import THEME from "../../../theme/Theme";
 
 const style = (Component) => styled(Component)`
   display: flex;

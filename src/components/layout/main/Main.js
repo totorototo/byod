@@ -1,7 +1,7 @@
 import React from "react";
 
 import style from "./Main.Style";
-import Video from "../video/Video";
+import Video from "../../technical/video/Video";
 
 const Main = ({ className, open, join, create, leave, localParticipant }) => {
   return (

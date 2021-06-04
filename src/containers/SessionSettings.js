@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { session } from "../store/actions";
-import SessionSettings from "../components/sessionSettings/SessionSettings";
+import SessionSettings from "../components/screens/sessionSettings/SessionSettings";
 
 const mapStateToProps = (state) => ({
   authentication: !!state.application.token,
