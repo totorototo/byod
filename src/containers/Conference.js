@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { conference } from "../store/actions";
+import { conference, spatial } from "../store/actions";
 import Conference from "../components/screens/conference/Conference";
 import {
   getCurrentConferenceID,
@@ -98,7 +98,7 @@ const mapStateToProps = (state) => {
   return {
     localParticipant: updatedLocalParticipant,
     conference,
-    remoteParticipants: [updatedLocalParticipant, ...updatedRemoteParticipants],
+    remoteParticipants: [...updatedRemoteParticipants],
     screenSharingStream: str,
   };
 };
@@ -109,6 +109,8 @@ const mapDispatchToProps = {
   startAudio: conference.startAudio,
   stopVideo: conference.stopVideo,
   startVideo: conference.startVideo,
+  setSpatialEnvironment: spatial.setSpatialEnvironment,
+  setParticipantPosition: spatial.setParticipantPosition,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Conference);

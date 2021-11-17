@@ -3,11 +3,12 @@ import { AutoSizer } from "react-virtualized";
 
 import style from "./Conference.Style";
 import Commands from "../../../containers/Commands";
-import Tile from "../../technical/tile/Tile";
+// import Tile from "../../technical/tile/Tile";
 import Video from "../../technical/video/Video";
 import useModal from "../../technical/hooks/useModal";
 import Modal from "../../technical/modal/Modal";
 import Settings from "../../../containers/Settings";
+import SpatialConference from "../../technical/spatialScene/SpatialScene";
 /*import { isMobile } from "../../helpers/device";
 import { partition } from "../../helpers/fp";*/
 
@@ -20,6 +21,8 @@ const Conference = ({
   startAudio,
   stopAudio,
   screenSharingStream,
+  setSpatialEnvironment,
+  setParticipantPosition,
 }) => {
   /* const [participantsWithVideo, setParticipantsWithVideo] = useState([]);
   const [participantsWithoutVideo, setParticipantsWithoutVideo] = useState([]);
@@ -110,7 +113,7 @@ const Conference = ({
                 </div>
               ))}
           </div>*/}
-          <div className={"remote-participants-video"}>
+          {/*  <div className={"remote-participants-video"}>
             {remoteParticipants &&
               remoteParticipants.length > 0 &&
               remoteParticipants.map((participant, index) => (
@@ -130,6 +133,20 @@ const Conference = ({
                   </AutoSizer>
                 </div>
               ))}
+          </div>*/}
+          <div className={"conference-wrapper"}>
+            <AutoSizer>
+              {({ width, height }) => (
+                <SpatialConference
+                  width={width}
+                  height={height}
+                  setSpatialEnvironment={setSpatialEnvironment}
+                  setParticipantPosition={setParticipantPosition}
+                  participants={remoteParticipants}
+                  localParticipant={localParticipant}
+                />
+              )}
+            </AutoSizer>
           </div>
         </>
       )}

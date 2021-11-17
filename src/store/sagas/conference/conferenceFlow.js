@@ -1,13 +1,17 @@
-import { takeEvery } from "redux-saga/effects";
+import { takeEvery, takeLatest } from "redux-saga/effects";
 
 import initialize from "./initialize";
-import { application, authentication } from "../../effects";
-import { conference, devices } from "../../actions";
+import {
+  application,
+  authentication,
+  // conference as conferenceEffects,
+} from "../../effects";
+import { conference, devices, spatial } from "../../actions";
 import { stopVideo, startVideo } from "./video";
 import { startAudio, stopAudio } from "./audio";
 import { recordConference, stopRecordingConference } from "./record";
 import { create, join, leave } from "./conference";
-//import { watchParticipant } from "./speaker";
+import { watchParticipant } from "./speaker";
 import { startScreenShare, stopScreenShare } from "./screenshare";
 import {
   enumerateAudioDevices,
@@ -16,6 +20,8 @@ import {
   setAudioOutput,
   setVideoInput,
 } from "./devices";
+import { setParticipantPosition, setSpatialEnvironment } from "./spatial";
+import { addParticipant } from "../../effects/conference";
 
 export default function* conferenceFlow() {
   yield takeEvery(authentication.setToken, initialize);
@@ -30,7 +36,7 @@ export default function* conferenceFlow() {
   yield takeEvery(conference.stopVideo, stopVideo);
   yield takeEvery(conference.startAudio, startAudio);
   yield takeEvery(conference.stopAudio, stopAudio);
-  //yield takeEvery(conferenceEffects.participantAdded, watchParticipant);
+  yield takeEvery(addParticipant, watchParticipant);
   yield takeEvery(conference.startScreenShare, startScreenShare);
   yield takeEvery(conference.stopScreenShare, stopScreenShare);
 
@@ -39,4 +45,7 @@ export default function* conferenceFlow() {
   yield takeEvery(devices.setAudioInput, setAudioInput);
   yield takeEvery(devices.setAudioOutput, setAudioOutput);
   yield takeEvery(devices.setVideoInput, setVideoInput);
+
+  yield takeLatest(spatial.setParticipantPosition, setParticipantPosition);
+  yield takeEvery(spatial.setSpatialEnvironment, setSpatialEnvironment);
 }

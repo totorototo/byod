@@ -100,6 +100,11 @@ const style = (Component) => styled(Component)`
     width: 100%;
     justify-content: center;
   }
+
+  .conference-wrapper {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export default style;

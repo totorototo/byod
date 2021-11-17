@@ -27,6 +27,7 @@ export const createConference = async (payload) => {
 
 export const getLocalParticipant = () => {
   const participant = VoxeetSDK.session.participant;
+
   const participantSchema = new schema.Entity(
     "participants",
     {},

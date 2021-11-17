@@ -13,8 +13,8 @@ import { getCurrentConferenceID } from "../../reducers/application/selectors";
 import { getEntity } from "../../reducers/entities/selectors";
 import {
   addConference,
-  updateConference,
   addParticipant,
+  updateConference,
 } from "../../effects/conference";
 
 export function* create({ payload }) {
@@ -70,6 +70,7 @@ export function* join({ payload }) {
 
   const options = {
     constraints: payload,
+    spatialAudio: true,
   };
 
   // FIXME: do not want conference object to be modify by sdk.
