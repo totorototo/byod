@@ -44,7 +44,8 @@ const Participant = ({
 
   // compute fake audio level
   useEffect(() => {
-    if (participant.isSpeaking === false) {
+    console.log(participant.isSpeaking);
+    if (!participant.isSpeaking) {
       setAudioLevel(0);
       return;
     }
