@@ -16,7 +16,8 @@ import { conference, application } from "../../effects";
 
 //let participantId;
 function* bgSync(participant) {
-  let isSpeaking;
+  let isSpeaking = false;
+  let previousStatus = false;
 
   const handleSpeakingStatus = (status) => {
     isSpeaking = status;
@@ -28,20 +29,23 @@ function* bgSync(participant) {
         // effects will get executed in parallel
         yield all([call(isSpeakingService, participant, handleSpeakingStatus)]);
 
-        yield put(
-          conference.updateParticipant({
-            id: participant.id,
-            entityType: "participants",
-            data: { ...participant, isSpeaking },
-          })
-        );
+        if (isSpeaking !== previousStatus) {
+          previousStatus = isSpeaking;
+          yield put(
+            conference.updateParticipant({
+              id: participant.id,
+              entityType: "participants",
+              data: { ...participant, isSpeaking },
+            })
+          );
+        }
 
         //console.log(`${participant.name}: speaking:${isSpeaking}`);
       } catch (error) {
         console.log("hack - sdk issue");
       }
 
-      yield delay(200);
+      yield delay(300);
     }
   } finally {
     if (yield cancelled()) {
