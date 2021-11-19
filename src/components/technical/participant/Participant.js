@@ -44,7 +44,6 @@ const Participant = ({
 
   // compute fake audio level
   useEffect(() => {
-    console.log(participant.isSpeaking);
     if (!participant.isSpeaking) {
       setAudioLevel(0);
       return;
@@ -135,7 +134,13 @@ const Participant = ({
       {!participant.hasVideo ? (
         <>
           <circle cx={width / 2} cy={height / 2} r={RADIUS} fill={color} />
-          <text x="50%" y="50%" textAnchor="middle" fill="white" dy=".3em">
+          <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            fill={theme.colors[colorMode]["--color-primary"]}
+            dy=".3em"
+          >
             {participant.name}
           </text>
         </>
