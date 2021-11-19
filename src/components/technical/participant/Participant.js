@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 
 import styled from "./Participant.Style";
 import { ThemeContext } from "../themeProvider/ThemeProvider";
+import Video from "../video/Video";
 
-const RADIUS = 30;
+const RADIUS = 75;
 
 const Participant = ({
   className,
@@ -14,6 +15,7 @@ const Participant = ({
   draggable = false,
   width,
   height,
+  color,
 }) => {
   const [strokeDashArray, setStrokeDashArray] = useState();
 
@@ -124,21 +126,27 @@ const Participant = ({
         cy={height / 2}
         r={RADIUS + 1}
         fill={"none"}
-        strokeWidth={3}
+        strokeWidth={6}
         stroke={theme.colors[colorMode]["--color-primary"]}
         strokeDasharray={strokeDashArray}
         strokeDashoffset={strokeDashOffset}
       />
-      <circle
-        cx={width / 2}
-        cy={height / 2}
-        r={RADIUS}
-        fill={theme.colors[colorMode]["--color-gray-300"]}
-      />
-      <text x="50%" y="50%" textAnchor="middle" fill="white" dy=".3em">
-        {participant.name}
-      </text>
-      Sorry, your browser does not support inline SVG.
+      {!participant.hasVideo ? (
+        <>
+          <circle cx={width / 2} cy={height / 2} r={RADIUS} fill={color} />
+          <text x="50%" y="50%" textAnchor="middle" fill="white" dy=".3em">
+            {participant.name}
+          </text>
+        </>
+      ) : (
+        <foreignObject x="0" y="0" width={width} height={height}>
+          <Video
+            width={RADIUS * 2}
+            height={RADIUS * 2}
+            stream={participant.streams[0]}
+          />
+        </foreignObject>
+      )}
     </svg>
   );
 };

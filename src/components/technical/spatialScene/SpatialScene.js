@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import style from "../../screens/conference/Conference.Style";
 import Participant from "../participant/Participant";
+import { ThemeContext } from "../themeProvider/ThemeProvider";
 
 const SpatialConference = ({
   className,
@@ -12,6 +13,8 @@ const SpatialConference = ({
   participants,
   localParticipant,
 }) => {
+  const { theme, colorMode } = useContext(ThemeContext);
+
   const [participantsPositions, setParticipantsPositions] = useState({});
 
   const setPosition = ({ participantId, position }) => {
@@ -56,9 +59,9 @@ const SpatialConference = ({
             x={centerX}
             y={centerY}
             draggable
-            color={"red"}
-            width={100}
-            height={100}
+            color={theme.colors[colorMode]["--color-homepage-light"]}
+            width={300}
+            height={300}
           />
         )}
         {participants &&
@@ -70,9 +73,9 @@ const SpatialConference = ({
               x={100 * (index + 1)}
               y={100}
               draggable
-              color={"blue"}
-              width={100}
-              height={100}
+              color={theme.colors[colorMode]["--color-gray-200"]}
+              width={300}
+              height={300}
             />
           ))}
       </svg>

@@ -1,12 +1,9 @@
 import styled from "styled-components";
 
 const style = (Component) => styled(Component)`
-  > video {
-    border-radius: 1rem;
-    object-fit: cover;
-
-    //border: 1px solid var(--color-primary);
-  }
+  border-radius: 50%;
+  object-fit: cover;
+  transform: translate(50%, 50%);
 `;
 
 export default style;
