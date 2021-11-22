@@ -12,12 +12,12 @@ import {
 import { isSpeaking as isSpeakingService } from "../../services/speaker";
 
 import { stopBackgroundTask } from "../../actions/conference";
-import { conference } from "../../effects";
-import { participantUpdated } from "../../effects/conference";
+import { conference, application } from "../../effects";
 
 //let participantId;
 function* bgSync(participant) {
-  let isSpeaking;
+  let isSpeaking = false;
+  let previousStatus = false;
 
   const handleSpeakingStatus = (status) => {
     isSpeaking = status;
@@ -29,24 +29,27 @@ function* bgSync(participant) {
         // effects will get executed in parallel
         yield all([call(isSpeakingService, participant, handleSpeakingStatus)]);
 
-        yield put(
-          participantUpdated({
-            id: participant.id,
-            entityType: "participants",
-            data: { ...participant, isSpeaking },
-          })
-        );
+        if (isSpeaking !== previousStatus) {
+          previousStatus = isSpeaking;
+          yield put(
+            conference.updateParticipant({
+              id: participant.id,
+              entityType: "participants",
+              data: { ...participant, isSpeaking },
+            })
+          );
+        }
 
-        console.log(`${participant.name}: speaking:${isSpeaking}`);
+        //console.log(`${participant.name}: speaking:${isSpeaking}`);
       } catch (error) {
         console.log("hack - sdk issue");
       }
 
-      yield delay(5000);
+      yield delay(300);
     }
   } finally {
     if (yield cancelled()) {
-      console.log("task cancelled");
+      // console.log("task cancelled");
       yield put(stopBackgroundTask());
     }
   }
@@ -56,11 +59,15 @@ export function* watchParticipant({ payload: { data, id } }) {
   const bgSyncTask = yield fork(bgSync, data[id]);
 
   while (true) {
-    console.log("waiting for participant updated");
+    // console.log("waiting for participant updated");
 
     const { update, ends } = yield race({
-      update: take(conference.participantUpdated),
-      ends: take([conference.ended, conference.left]),
+      update: take(conference.updateParticipant),
+      ends: take([
+        conference.ended,
+        conference.left,
+        application.leaveConference,
+      ]),
     });
 
     if (ends) {
@@ -77,5 +84,5 @@ export function* watchParticipant({ payload: { data, id } }) {
       break;
     }
   }
-  console.log("exiting");
+  // console.log("exiting");
 }

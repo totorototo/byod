@@ -30,17 +30,16 @@ const Video = ({ className, stream, width, height }) => {
   }, []);
 
   return (
-    <div className={className}>
-      <video
-        onCanPlay={handleCanPlay}
-        ref={ref}
-        width={width}
-        height={height}
-        autoPlay
-        muted
-        playsInline
-      />
-    </div>
+    <video
+      className={className}
+      onCanPlay={handleCanPlay}
+      ref={ref}
+      width={width}
+      height={height}
+      autoPlay
+      muted
+      playsInline
+    />
   );
 };
 

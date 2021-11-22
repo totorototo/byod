@@ -16,7 +16,7 @@ const Main = ({ className, open, join, create, leave, localParticipant }) => {
               ttl: 0,
               stats: "true",
               videoCodec: "H264",
-              dolbyVoice: false,
+              dolbyVoice: true,
             },
           })
         }

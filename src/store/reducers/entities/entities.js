@@ -20,6 +20,7 @@ import {
 } from "../../effects/conference";
 import { handleEffects } from "../../utils/store";
 import { leaveConference } from "../../effects/application";
+import { participantPositionSet } from "../../effects/spatial";
 
 const initialState = {};
 
@@ -79,6 +80,7 @@ export default handleEffects(
     [addDevice]: setEntityReducer,
     [updateDevice]: updateEntityReducer,
     [addConference]: setEntityReducer,
+    [participantPositionSet]: updateEntityReducer,
   },
   initialState
 );

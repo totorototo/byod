@@ -5,10 +5,12 @@ import { authentication } from "../../effects";
 
 export async function retrieveAccessToken() {
   const consumerKey = process.env.REACT_APP_CONSUMER_KEY;
-  const consumerSecret = process.env.REACT_APP_CONSUMER_SECRET;
-  const url = "https://session.voxeet.com/v1/oauth2/token";
+  // const consumerSecret = process.env.REACT_APP_CONSUMER_SECRET;
+  // const url = "https://session.voxeet.com/v1/oauth2/token";
+  const authUri = "https://session.voxeet.com";
+  const url = `${authUri}/test/token/${consumerKey}`;
 
-  const headers = new Headers();
+  /*  const headers = new Headers();
   headers.append(
     "Authorization",
     "Basic " + btoa(encodeURI(consumerKey) + ":" + encodeURI(consumerSecret))
@@ -20,9 +22,9 @@ export async function retrieveAccessToken() {
     body: {
       grant_type: "client_credentials",
     },
-  };
+  };*/
 
-  const response = await fetch(url, params);
+  const response = await fetch(url);
   const { access_token } = await response.json();
   return access_token;
 }
