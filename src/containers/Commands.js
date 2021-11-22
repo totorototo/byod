@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { conference, devices } from "../store/actions";
+import { conference, devices, debug } from "../store/actions";
 import Commands from "../components/technical/commands/Commands";
 import {
   getCurrentConferenceID,
@@ -26,6 +26,7 @@ const mapDispatchToProps = {
   setAudioInput: devices.setAudioInput,
   setAudioOutput: devices.setAudioOutput,
   setVideoInput: devices.setVideoInput,
+  takeSnapshot: debug.takeSnapshot,
 };
 
 const mapStateToProps = (state) => {

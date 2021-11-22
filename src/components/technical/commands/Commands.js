@@ -8,6 +8,7 @@ import {
   LogOut,
   Circle,
   Settings,
+  Camera,
 } from "@styled-icons/feather";
 
 import style from "./Commands.Style";
@@ -40,6 +41,7 @@ const Commands = ({
   setAudioOutput,
   setVideoInput,
   displayModal,
+  takeSnapshot,
 }) => {
   const handleVideo = () => {
     hasVideo ? stopVideo(localParticipantID) : startVideo(localParticipantID);
@@ -70,6 +72,9 @@ const Commands = ({
       </ActionButton>
       <ActionButton action={() => handleScreenSharing()}>
         <Cast />
+      </ActionButton>
+      <ActionButton action={() => takeSnapshot()}>
+        <Camera />
       </ActionButton>
       <ActionButton action={() => displayModal()}>
         <Settings />

@@ -40,16 +40,16 @@ function* bgSync(participant) {
           );
         }
 
-        //console.log(`${participant.name}: speaking:${isSpeaking}`);
+        console.log(`${participant.name}: speaking:${isSpeaking}`);
       } catch (error) {
         console.log("hack - sdk issue");
       }
 
-      yield delay(300);
+      yield delay(900);
     }
   } finally {
     if (yield cancelled()) {
-      // console.log("task cancelled");
+      console.log("task cancelled");
       yield put(stopBackgroundTask());
     }
   }
@@ -59,7 +59,7 @@ export function* watchParticipant({ payload: { data, id } }) {
   const bgSyncTask = yield fork(bgSync, data[id]);
 
   while (true) {
-    // console.log("waiting for participant updated");
+    console.log("waiting for participant updated");
 
     const { update, ends } = yield race({
       update: take(conference.updateParticipant),
@@ -84,5 +84,5 @@ export function* watchParticipant({ payload: { data, id } }) {
       break;
     }
   }
-  // console.log("exiting");
+  console.log("exiting");
 }
