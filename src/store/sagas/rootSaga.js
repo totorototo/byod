@@ -4,6 +4,7 @@ import authenticationFlow from "./authentication/authenticationFlow";
 import conferenceFlow from "./conference/conferenceFlow";
 import sessionFlow from "./session/sessionFlow";
 import eventFlow from "./events/eventFlow";
+import debug from "./debug/debugFlow";
 
 export default function* rootSaga() {
   yield all([
@@ -11,5 +12,6 @@ export default function* rootSaga() {
     sessionFlow(),
     conferenceFlow(),
     eventFlow(),
+    debug(),
   ]);
 }
