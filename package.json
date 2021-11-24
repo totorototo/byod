@@ -16,6 +16,7 @@
     "d3-shape": "^3.0.1",
     "history": "4.7.2",
     "husky": "^6.0.0",
+    "leva": "^0.9.15",
     "lint-staged": "^10.5.4",
     "lodash.get": "^4.4.2",
     "lodash.omit": "^4.5.0",
