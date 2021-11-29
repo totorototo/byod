@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import style from "./ConferenceSettings.Style";
 
-const ConferenceSettings = ({ className, create }) => {
+const ConferenceSettings = ({ className, create, demo }) => {
   const [conferenceName, setConferenceName] = useState("");
 
   const handleSubmit = (event) => {
@@ -41,6 +41,9 @@ const ConferenceSettings = ({ className, create }) => {
           </div>
           <button type="submit">join conference</button>
         </form>
+        <button className={"demo"} onClick={() => demo()}>
+          demo conference
+        </button>
       </div>
     </div>
   );

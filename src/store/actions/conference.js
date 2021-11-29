@@ -2,6 +2,7 @@ import { createAction } from "../utils/store";
 
 export const create = createAction("CREATE_CONFERENCE");
 export const join = createAction("JOIN_CONFERENCE");
+export const demo = createAction("JOIN_DEMO_CONFERENCE");
 export const leave = createAction("LEAVE_CONFERENCE");
 export const nearbyFound = createAction("NEARBY_FOUND");
 export const nearbyLost = createAction("NEARBY_LOST");

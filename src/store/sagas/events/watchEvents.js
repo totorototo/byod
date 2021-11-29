@@ -307,9 +307,11 @@ function* externalListener(channel) {
                 entityType: "participants",
 
                 data: {
-                  streams: participant.streams.filter(
-                    (stream) => stream.id !== streamID
-                  ),
+                  streams:
+                    participant.streams &&
+                    participant.streams.filter(
+                      (stream) => stream.id !== streamID
+                    ),
                 },
               })
             );

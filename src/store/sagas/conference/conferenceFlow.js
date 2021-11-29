@@ -10,7 +10,7 @@ import { conference, devices, spatial } from "../../actions";
 import { stopVideo, startVideo } from "./video";
 import { startAudio, stopAudio } from "./audio";
 import { recordConference, stopRecordingConference } from "./record";
-import { create, join, leave } from "./conference";
+import { create, join, leave, demo } from "./conference";
 import { watchParticipant } from "./speaker";
 import { startScreenShare, stopScreenShare } from "./screenshare";
 import {
@@ -27,6 +27,7 @@ export default function* conferenceFlow() {
   yield takeEvery(authentication.setToken, initialize);
   yield takeEvery(conference.create, create);
   yield takeEvery(conference.join, join);
+  yield takeEvery(conference.demo, demo);
   yield takeEvery(conference.leave, leave);
   yield takeEvery(conference.nearbyFound, stopAudio);
   yield takeEvery(conference.nearbyLost, startAudio);
