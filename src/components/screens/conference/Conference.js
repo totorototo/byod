@@ -8,7 +8,8 @@ import Video from "../../technical/video/Video";
 import useModal from "../../technical/hooks/useModal";
 import Modal from "../../technical/modal/Modal";
 import Settings from "../../../containers/Settings";
-import SpatialConference from "../../technical/spatialScene/SpatialScene";
+// import SpatialConference from "../../technical/spatialScene/SpatialScene";
+import ThreeDimensionalScene from "../../technical/3DSpatialScene/3DSpatialScene";
 /*import { isMobile } from "../../helpers/device";
 import { partition } from "../../helpers/fp";*/
 
@@ -137,7 +138,7 @@ const Conference = ({
           <div className={"conference-wrapper"}>
             <AutoSizer>
               {({ width, height }) => (
-                <SpatialConference
+                <ThreeDimensionalScene
                   width={width}
                   height={height}
                   setSpatialEnvironment={setSpatialEnvironment}
