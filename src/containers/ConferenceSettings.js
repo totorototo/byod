@@ -10,6 +10,7 @@ const mapDispatchToProps = {
   create: conference.create,
   join: conference.join,
   leave: conference.leave,
+  demo: conference.demo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceSettings);

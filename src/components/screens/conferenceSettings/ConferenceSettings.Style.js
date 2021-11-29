@@ -9,6 +9,12 @@ const style = (Component) => styled(Component)`
   height: 100%;
   position: relative;
 
+  .demo {
+    position: absolute;
+    right: 3rem;
+    bottom: 3rem;
+  }
+
   input::placeholder {
     transition: all 0.3s ease-in-out;
   }

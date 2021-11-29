@@ -7,6 +7,7 @@ import {
   createConference,
   getLocalParticipant,
   joinConference,
+  joinDemoConference,
   leaveConference,
 } from "../../services/conference";
 import { getCurrentConferenceID } from "../../reducers/application/selectors";
@@ -16,6 +17,48 @@ import {
   addParticipant,
   updateConference,
 } from "../../effects/conference";
+
+export function* demo({ payload }) {
+  const { entities, conferenceID, error } = yield call(joinDemoConference);
+
+  if (!error) {
+    yield put(
+      addConference({
+        id: conferenceID,
+        data: entities.conferences,
+        entityType: "conferences",
+      })
+    );
+
+    // update application
+    yield put(application.setCurrentConferenceID({ id: conferenceID }));
+
+    // get local participant
+    const { participantID, entities: participantEntities } = yield call(
+      getLocalParticipant
+    );
+
+    yield put(
+      addParticipant({
+        id: participantID,
+        data: participantEntities.participants,
+        entityType: "participants",
+      })
+    );
+
+    yield put(
+      updateConference({
+        id: conferenceID,
+        entityType: "conferences",
+        data: { participants: [participantID] },
+      })
+    );
+
+    yield put(application.setLocalParticipantID({ id: participantID }));
+
+    yield put(push(`/conference/${conferenceID}`));
+  }
+}
 
 export function* create({ payload }) {
   const { entities: conferenceEntities, conferenceID } = yield call(
@@ -90,7 +133,6 @@ export function* leave() {
   const error = yield call(leaveConference);
   if (!error) {
     yield put(application.leaveConference());
-
     yield put(push("/conferenceSettings"));
   }
 }

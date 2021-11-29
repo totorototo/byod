@@ -46,17 +46,36 @@ export const getLocalParticipant = () => {
   };
 };
 
+export const joinDemoConference = async () => {
+  try {
+    const joinedConference = await VoxeetSDK.conference.demo();
+
+    const conferenceSchema = new schema.Entity(
+      "conferences",
+      {},
+      {
+        idAttribute: "id",
+        processStrategy: (entity) => pick(entity, ["alias", "pinCode", "id"]),
+      }
+    );
+
+    const normalizedData = normalize(joinedConference, conferenceSchema);
+
+    return {
+      conferenceID: normalizedData.result,
+      entities: normalizedData.entities,
+    };
+  } catch (exception) {
+    return exception;
+  }
+};
+
 export const joinConference = async ({ conference, options }) => {
   try {
     const joinedConference = await VoxeetSDK.conference.join(
       conference,
       options
     );
-
-    /*    const joinedConference = await VoxeetSDK.conference.demo(
-      conference,
-      options
-    );*/
 
     const conferenceSchema = new schema.Entity(
       "conferences",
@@ -81,6 +100,7 @@ export const leaveConference = async () => {
   try {
     await VoxeetSDK.conference.leave();
   } catch (exception) {
+    debugger;
     return exception;
   }
 };
