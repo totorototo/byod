@@ -52,6 +52,12 @@ export const joinConference = async ({ conference, options }) => {
       conference,
       options
     );
+
+    /*    const joinedConference = await VoxeetSDK.conference.demo(
+      conference,
+      options
+    );*/
+
     const conferenceSchema = new schema.Entity(
       "conferences",
       {},

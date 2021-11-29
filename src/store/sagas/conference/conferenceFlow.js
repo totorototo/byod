@@ -11,7 +11,7 @@ import { stopVideo, startVideo } from "./video";
 import { startAudio, stopAudio } from "./audio";
 import { recordConference, stopRecordingConference } from "./record";
 import { create, join, leave } from "./conference";
-// import { watchParticipant } from "./speaker";
+import { watchParticipant } from "./speaker";
 import { startScreenShare, stopScreenShare } from "./screenshare";
 import {
   enumerateAudioDevices,
@@ -21,7 +21,7 @@ import {
   setVideoInput,
 } from "./devices";
 import { setParticipantPosition, setSpatialEnvironment } from "./spatial";
-// import { addParticipant } from "../../effects/conference";
+import { addParticipant } from "../../effects/conference";
 
 export default function* conferenceFlow() {
   yield takeEvery(authentication.setToken, initialize);
@@ -36,7 +36,7 @@ export default function* conferenceFlow() {
   yield takeEvery(conference.stopVideo, stopVideo);
   yield takeEvery(conference.startAudio, startAudio);
   yield takeEvery(conference.stopAudio, stopAudio);
-  // yield takeEvery(addParticipant, watchParticipant);
+  yield takeEvery(addParticipant, watchParticipant);
   yield takeEvery(conference.startScreenShare, startScreenShare);
   yield takeEvery(conference.stopScreenShare, stopScreenShare);
 

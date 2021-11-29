@@ -1,32 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, TransformControls, useCursor } from "@react-three/drei";
+import { OrbitControls, TransformControls } from "@react-three/drei";
 import { useControls } from "leva";
 
+import Participant from "./Model";
 import style from "./3DSpatialScene.Style";
+import Grid from "./Grid";
 
-function Box({ setTarget, setSpatialPosition, participant, ...rest }) {
-  const [hovered, setHovered] = useState(false);
+const getPosition = (radius, angle) => {
+  // Convert angle to radians
+  const theta = angle * (Math.PI / 180);
+  return [radius * Math.cos(theta), 0, -radius * Math.sin(theta)];
+};
 
-  useCursor(hovered);
-
-  return (
-    <mesh
-      {...rest}
-      onClick={(e) => {
-        setTarget(e.object);
-      }}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-      onUpdate={({ position }) => {
-        setSpatialPosition({ participantId: participant.id, position });
-      }}
-    >
-      <boxGeometry />
-      <meshNormalMaterial color="orange" />
-    </mesh>
-  );
-}
+const DELTA = 30;
 
 const SpatialScene = ({
   className,
@@ -39,8 +26,19 @@ const SpatialScene = ({
 }) => {
   const [target, setTarget] = useState();
   const { mode } = useControls({
-    mode: { value: "translate", options: ["translate"] },
+    mode: { value: "translate", options: ["translate", "rotate"] },
   });
+
+  const [colors, setColors] = useState({});
+
+  useEffect(() => {
+    participants.forEach((participant) => {
+      if (!Object.keys(colors).includes(participant.id)) {
+        const color = "#" + Math.random().toString(16).substr(-6);
+        setColors({ ...colors, [participant.id]: color });
+      }
+    });
+  }, [participants, colors]);
 
   useEffect(() => {
     if (!width || !height) return;
@@ -61,23 +59,41 @@ const SpatialScene = ({
       dpr={[1, 2]}
       onPointerMissed={() => setTarget(null)}
     >
+      <pointLight position={[5, 5, 5]} />
+      <Grid size={30} />
       {localParticipant && (
-        <Box
-          setTarget={setTarget}
-          setSpatialPosition={setParticipantPosition}
-          participant={localParticipant}
-          position={[0, 0, 0]}
-        />
+        <Suspense fallback={null /* or null */}>
+          <Participant
+            setTarget={setTarget}
+            setSpatialPosition={setParticipantPosition}
+            participant={localParticipant}
+            scale="0.05"
+            color="red"
+            position={[0, 0, 0]}
+            rotation={[0, Math.PI / 2, 0]}
+          />
+        </Suspense>
       )}
       {participants &&
         participants.map((participant, index) => (
-          <Box
-            key={index}
-            setTarget={setTarget}
-            position={[(index + 1) * 2, 0, -3]}
-            setSpatialPosition={setParticipantPosition}
-            participant={participant}
-          />
+          <Suspense key={index} fallback={null}>
+            <Participant
+              scale="0.05"
+              color={colors[participant.id]}
+              position={getPosition(
+                12,
+                (index === 0
+                  ? 0
+                  : index % 2
+                  ? index * DELTA
+                  : -index * DELTA + DELTA) + 90
+              )}
+              rotation={[0, -Math.PI / 2, 0]}
+              participant={participant}
+              setTarget={setTarget}
+              setSpatialPosition={setParticipantPosition}
+            />
+          </Suspense>
         ))}
 
       {target && <TransformControls object={target} mode={mode} />}
