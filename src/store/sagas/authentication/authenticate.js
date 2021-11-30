@@ -7,7 +7,7 @@ export async function retrieveAccessToken() {
   const consumerKey = process.env.REACT_APP_CONSUMER_KEY;
   // const consumerSecret = process.env.REACT_APP_CONSUMER_SECRET;
   // const url = "https://session.voxeet.com/v1/oauth2/token";
-  const authUri = "https://session.voxeet.com";
+  const authUri = process.env.REACT_APP_AUTH_URI;
   const url = `${authUri}/test/token/${consumerKey}`;
 
   /*  const headers = new Headers();

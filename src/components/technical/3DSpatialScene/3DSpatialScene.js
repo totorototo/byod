@@ -58,6 +58,7 @@ const SpatialScene = ({
       style={{ width, height }}
       dpr={[1, 2]}
       onPointerMissed={() => setTarget(null)}
+      camera={{ position: [10, 10, 15] }}
     >
       <pointLight position={[5, 5, 5]} />
       <Grid size={30} />
