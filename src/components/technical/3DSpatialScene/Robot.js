@@ -44,6 +44,18 @@ export default function Model({
   const [pos, setPos] = useState(initialPosition);
 
   useEffect(() => {
+    setSpatialPosition({
+      participantId: participant.id,
+      position: {
+        x: initialPosition[0],
+        y: initialPosition[1],
+        z: initialPosition[2],
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (!participant) return;
     if (!setSpatialPosition) return;
 
