@@ -2,7 +2,6 @@ import React, { useEffect, useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import style from "./3DSpatialScene.Style";
-import Obj from "./Obj";
 import Robot from "./Robot";
 import * as THREE from "three";
 

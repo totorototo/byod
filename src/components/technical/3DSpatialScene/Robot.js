@@ -57,7 +57,7 @@ export default function Model({
       });
       setCachedPosition(pos);
     }
-  }, [pos, participant, setSpatialPosition]);
+  }, [pos, participant, setSpatialPosition, cachedPosition]);
 
   let planeIntersectPoint = new THREE.Vector3();
 
