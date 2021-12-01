@@ -1,16 +1,14 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, TransformControls } from "@react-three/drei";
-import { useControls } from "leva";
-
-import Participant from "./Model";
+import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import style from "./3DSpatialScene.Style";
-import Grid from "./Grid";
+import Robot from "./Robot";
+import * as THREE from "three";
 
 const getPosition = (radius, angle) => {
   // Convert angle to radians
   const theta = angle * (Math.PI / 180);
-  return [radius * Math.cos(theta), 0, -radius * Math.sin(theta)];
+  return [radius * Math.cos(theta), 1, -radius * Math.sin(theta)];
 };
 
 const DELTA = 30;
@@ -24,10 +22,8 @@ const SpatialScene = ({
   setSpatialEnvironment,
   setParticipantPosition,
 }) => {
-  const [target, setTarget] = useState();
-  const { mode } = useControls({
-    mode: { value: "translate", options: ["translate", "rotate"] },
-  });
+  const [isDragging, setIsDragging] = useState(false);
+  const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 
   const [colors, setColors] = useState({});
 
@@ -53,16 +49,18 @@ const SpatialScene = ({
   }, [width, height, setSpatialEnvironment]);
 
   return (
-    <Canvas
+    /*  <Canvas
       className={className}
       style={{ width, height }}
       dpr={[1, 2]}
       onPointerMissed={() => setTarget(null)}
+      camera={{ position: [10, 10, 15] }}
     >
       <pointLight position={[5, 5, 5]} />
+
       <Grid size={30} />
       {localParticipant && (
-        <Suspense fallback={null /* or null */}>
+        <Suspense fallback={null /!* or null *!/}>
           <Participant
             setTarget={setTarget}
             setSpatialPosition={setParticipantPosition}
@@ -98,6 +96,75 @@ const SpatialScene = ({
 
       {target && <TransformControls object={target} mode={mode} />}
       <OrbitControls makeDefault />
+    </Canvas>*/
+    <Canvas
+      className={className}
+      style={{ background: "white", width, height }}
+      shadows
+      dpr={[1, 2]}
+    >
+      <ambientLight intensity={0.5} />
+      <directionalLight
+        intensity={0.5}
+        castShadow
+        shadow-mapSize-height={1512}
+        shadow-mapSize-width={1512}
+      />
+
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, -0.1, 0]}
+        receiveShadow
+      >
+        <planeBufferGeometry attach="geometry" args={[30, 30]} receiveShadow />
+        <meshPhongMaterial
+          attach="material"
+          color="#ccc"
+          side={THREE.DoubleSide}
+          receiveShadow
+        />
+      </mesh>
+
+      <planeHelper args={[floorPlane, 5, "red"]} />
+
+      <gridHelper args={[100, 100]} />
+
+      {localParticipant && (
+        <Suspense fallback={null}>
+          <Robot
+            initialPosition={[0, 1, 5]}
+            color={"pink"}
+            participant={localParticipant}
+            setIsDragging={setIsDragging}
+            floorPlane={floorPlane}
+            setSpatialPosition={setParticipantPosition}
+          />
+        </Suspense>
+      )}
+      {participants &&
+        participants.map((participant, index) => (
+          <Suspense key={index} fallback={null}>
+            <Robot
+              participant={participant}
+              setIsDragging={setIsDragging}
+              floorPlane={floorPlane}
+              color={colors[participant.id]}
+              setSpatialPosition={setParticipantPosition}
+              initialPosition={getPosition(
+                20,
+                (index === 0
+                  ? 0
+                  : index % 2
+                  ? index * DELTA
+                  : -index * DELTA + DELTA) + 90
+              )}
+            />
+          </Suspense>
+        ))}
+
+      <OrthographicCamera makeDefault zoom={50} position={[0, 40, 200]} />
+
+      <OrbitControls minZoom={10} maxZoom={150} enabled={!isDragging} />
     </Canvas>
   );
 };
