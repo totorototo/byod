@@ -48,8 +48,8 @@ export default function Model({
     if (!setSpatialPosition) return;
 
     if (
-      Math.abs(cachedPosition[0] - pos[0]) > 5 ||
-      Math.abs(cachedPosition[2] - pos[2]) > 5
+      Math.abs(cachedPosition[0] - pos[0]) > 2 ||
+      Math.abs(cachedPosition[2] - pos[2]) > 2
     ) {
       setSpatialPosition({
         participantId: participant.id,
