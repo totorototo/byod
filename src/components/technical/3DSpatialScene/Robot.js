@@ -78,10 +78,10 @@ export default function Model({
       setRotationAngle(angleInRadian + Math.PI / 2);
 
       // set spatial direction for participant
-      /*      setParticipantDirection({
+      setParticipantDirection({
         participantId: participant.id,
         direction: { x: 0, y: angleInRadian * (180 / Math.PI), z: 0 },
-      });*/
+      });
     }
   }, [
     pos,
