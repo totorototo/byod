@@ -28,7 +28,7 @@ export const setDirection = (
 ) => {
   try {
     const participant = VoxeetSDK.conference.participants.get(participantId);
-    VoxeetSDK.conference.setSpatialPosition(participant, direction);
+    VoxeetSDK.conference.setSpatialDirection(participant, direction);
   } catch (exception) {
     return exception;
   }
