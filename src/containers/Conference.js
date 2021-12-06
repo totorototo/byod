@@ -111,6 +111,7 @@ const mapDispatchToProps = {
   startVideo: conference.startVideo,
   setSpatialEnvironment: spatial.setSpatialEnvironment,
   setParticipantPosition: spatial.setParticipantPosition,
+  setParticipantDirection: spatial.setParticipantDirection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Conference);

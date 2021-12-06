@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import style from "./3DSpatialScene.Style";
@@ -21,9 +21,12 @@ const SpatialScene = ({
   height,
   setSpatialEnvironment,
   setParticipantPosition,
+  setParticipantDirection,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+
+  //const texture = useLoader(TextureLoader, img);
 
   const [colors, setColors] = useState({});
 
@@ -116,18 +119,24 @@ const SpatialScene = ({
         position={[0, -0.1, 0]}
         receiveShadow
       >
-        <planeBufferGeometry attach="geometry" args={[30, 30]} receiveShadow />
+        <planeBufferGeometry attach="geometry" args={[30, 15]} receiveShadow />
         <meshPhongMaterial
           attach="material"
           color="#ccc"
           side={THREE.DoubleSide}
           receiveShadow
         />
+        {/*  <meshBasicMaterial
+            opacity={0.09}
+            attach="material"
+            map={texture}
+            side={THREE.DoubleSide}
+          />*/}
       </mesh>
 
       <planeHelper args={[floorPlane, 5, "red"]} />
 
-      <gridHelper args={[100, 100]} />
+      <gridHelper args={[60, 60]} />
 
       {localParticipant && (
         <Suspense fallback={null}>
@@ -138,6 +147,7 @@ const SpatialScene = ({
             setIsDragging={setIsDragging}
             floorPlane={floorPlane}
             setSpatialPosition={setParticipantPosition}
+            setParticipantDirection={setParticipantDirection}
           />
         </Suspense>
       )}
@@ -150,6 +160,7 @@ const SpatialScene = ({
               floorPlane={floorPlane}
               color={colors[participant.id]}
               setSpatialPosition={setParticipantPosition}
+              setParticipantDirection={setParticipantDirection}
               initialPosition={getPosition(
                 20,
                 (index === 0

@@ -21,3 +21,15 @@ export const setPosition = (participantId, position = { x: 0, y: 0, z: 0 }) => {
     return exception;
   }
 };
+
+export const setDirection = (
+  participantId,
+  direction = { x: 0, y: 0, z: -1 }
+) => {
+  try {
+    const participant = VoxeetSDK.conference.participants.get(participantId);
+    VoxeetSDK.conference.setSpatialPosition(participant, direction);
+  } catch (exception) {
+    return exception;
+  }
+};

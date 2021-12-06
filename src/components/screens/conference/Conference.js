@@ -24,6 +24,7 @@ const Conference = ({
   screenSharingStream,
   setSpatialEnvironment,
   setParticipantPosition,
+  setParticipantDirection,
 }) => {
   /* const [participantsWithVideo, setParticipantsWithVideo] = useState([]);
   const [participantsWithoutVideo, setParticipantsWithoutVideo] = useState([]);
@@ -143,6 +144,7 @@ const Conference = ({
                   height={height}
                   setSpatialEnvironment={setSpatialEnvironment}
                   setParticipantPosition={setParticipantPosition}
+                  setParticipantDirection={setParticipantDirection}
                   participants={remoteParticipants}
                   localParticipant={localParticipant}
                 />
