@@ -19,6 +19,7 @@ export default function Model({
   floorPlane,
   participant,
   setSpatialPosition,
+  setParticipantDirection,
   color,
   initialPosition = [0, 0, 0],
   ...rest
@@ -42,6 +43,7 @@ export default function Model({
   const [cachedPosition, setCachedPosition] = useState(initialPosition);
 
   const [pos, setPos] = useState(initialPosition);
+  const [rotationAngle, setRotationAngle] = useState(0);
 
   useEffect(() => {
     setSpatialPosition({
@@ -68,8 +70,26 @@ export default function Model({
         position: { x: pos[0], y: pos[1], z: pos[2] },
       });
       setCachedPosition(pos);
+
+      // compute participant direction
+      const deltaX = pos[0] - cachedPosition[0];
+      const deltaZ = cachedPosition[2] - pos[2];
+      const angleInRadian = Math.atan2(deltaZ, deltaX);
+      setRotationAngle(angleInRadian + Math.PI / 2);
+
+      // set spatial direction for participant
+      setParticipantDirection({
+        participantId: participant.id,
+        direction: { x: 0, y: angleInRadian * (180 / Math.PI), z: 0 },
+      });
     }
-  }, [pos, participant, setSpatialPosition, cachedPosition]);
+  }, [
+    pos,
+    participant,
+    setSpatialPosition,
+    setParticipantDirection,
+    cachedPosition,
+  ]);
 
   let planeIntersectPoint = new THREE.Vector3();
 
@@ -96,13 +116,7 @@ export default function Model({
         // position: active ? [x / aspect, -y / aspect, 0] : [0, 0, 0],
         position: pos,
         scale: active ? 1.2 : 1,
-        rotation: [
-          0,
-          pos[0] > 0
-            ? -Math.atan(pos[2] / pos[0]) - Math.PI / 2
-            : -Math.atan(pos[2] / pos[0]) + Math.PI / 2,
-          0,
-        ],
+        rotation: [0, rotationAngle, 0],
       });
       return timeStamp;
     },

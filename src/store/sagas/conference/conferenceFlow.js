@@ -20,7 +20,11 @@ import {
   setAudioOutput,
   setVideoInput,
 } from "./devices";
-import { setParticipantPosition, setSpatialEnvironment } from "./spatial";
+import {
+  setParticipantDirection,
+  setParticipantPosition,
+  setSpatialEnvironment,
+} from "./spatial";
 import { addParticipant } from "../../effects/conference";
 
 export default function* conferenceFlow() {
@@ -48,5 +52,6 @@ export default function* conferenceFlow() {
   yield takeEvery(devices.setVideoInput, setVideoInput);
 
   yield takeLatest(spatial.setParticipantPosition, setParticipantPosition);
+  yield takeLatest(spatial.setParticipantDirection, setParticipantDirection);
   yield takeEvery(spatial.setSpatialEnvironment, setSpatialEnvironment);
 }
